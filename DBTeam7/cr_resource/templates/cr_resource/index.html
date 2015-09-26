@@ -1,0 +1,10 @@
+{% if latest_room_list %}
+    <ul>
+        {% for conference_room in latest_room_list %}
+            <li><a href = "/cr_resource/{{ conference_room.id}}/">{{conference_room.conference_room_name}}</a>
+               </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No Conference Rooms are Available</p>
+{% endif %}

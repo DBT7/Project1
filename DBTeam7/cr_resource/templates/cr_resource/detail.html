@@ -1,0 +1,6 @@
+<h1>{{ conference_room.conference_room_name}}</h1>
+<ul>
+    {% for resource in conference_room.conferenceroomresource_set.all %}
+        <li>{{ resource.resource_name }}</li>
+    {% endfor %}
+</ul>

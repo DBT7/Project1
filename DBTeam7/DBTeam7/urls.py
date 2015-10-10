@@ -16,7 +16,9 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^cr_resource/', include('cr_resource.urls')),
+    url(r'^c/', include('comment.urls')),
 ]

@@ -78,16 +78,10 @@ WSGI_APPLICATION = 'DBTeam7.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DBTeam7',
-        'USER': 'root',
-        'PASSWORD': 'DBTeam7',
-        'OPTIONS': {
-          'autocommit': True,
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

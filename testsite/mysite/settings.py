@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-'books',
+    'books',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,9 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         
-        'NAME': 'test',
-        'USER':'root',
-        'PASSWORD':'',
+        'NAME': 'TestDB',
+       'USER':'root',
+        'PASSWORD':'100515',
     }
 }
 

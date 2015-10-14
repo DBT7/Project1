@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cr_resource',
-    'comment'
+    'comment',
+    'conference_room',
 )
 
 MIDDLEWARE_CLASSES = (

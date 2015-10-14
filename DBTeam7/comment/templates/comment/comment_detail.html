@@ -4,6 +4,7 @@
 
 <h2>{{ object.title }}</h2>
 <p><em>by {{ object.author.username }}</em></p>
+<p><em>for Confrence Room {{ object.conference_room.conference_room_name }}</em></p>
 <p>{{ object.text }}</p>
 
 <a href="{% url 'comment_edit' object.pk %}">Edit</a>

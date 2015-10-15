@@ -28,5 +28,6 @@ class ReservationAdmin(admin.ModelAdmin):
     ]
     inlines = [RoomInline]
 
+# Register the models
 admin.site.register(Room, RoomAdmin)
 admin.site.register(Reservation, ReservationAdmin)

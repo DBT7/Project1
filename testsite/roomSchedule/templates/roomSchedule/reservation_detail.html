@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Reservation ID:        {{ object.reservation_id }}</h2>
+<p>Reservation DateTime:   {{ object.reservation_dt }}</p>
+<p>Reservation Blocks:     {{ object.duration }}</p>
+<p>Reservation Owner:      {{ object.user_user }}</p>
+<p>Reservation Room:       {{ object.room_room }}</p>
+<p>Reservation Building:   {{ object.room_building_building }}</p>
+
+<a href="{% url 'comment_edit' object.pk %}">Edit</a>
+|
+<a href="{% url 'comment_delete' object.pk %}">Delete</a>
+
+{% endblock %}

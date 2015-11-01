@@ -25,6 +25,12 @@ from roomSchedule import views
 
 urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
+    #url(r'^home/',views.user_homepage, name='home'),
+    url(r'^home/$',views.UserHome.as_view(), name='user_home'),
+    url(r'^(?P<pk>[0-9]+)/$', views.ReservationDetail.as_view(), name='reservation_detail'),
+    url(r'create/$', views.ReservationCreate.as_view(), name='reservation_create'),
+    url(r'^(?P<pk>[0-9]+)/update/$', views.ReservationUpdate.as_view(), name='reservation_edit'),
+    url(r'^(?P<pk>[0-9]+)/delete/$', views.ReservationDelete.as_view(), name='reservation_delete'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^hello/$', hello),
     url(r'^time/$',current_datetime),

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <h1>Current Reservations</h1>
+    </div>
+    {% for Reservation in object_list %}
+    <div class="Reservation">
+        <h2> Reservation ID:      {{ Reservation.reservation_id }}</h2>
+        <p>Reservation DateTime:  {{ Reservation.reservation_dt }}</p>
+        <p>Reservation Blocks:    {{ Reservation.duration }}</p>
+        <p>Reservation Owner:     {{ Reservation.user_user }}</p>
+        <p>Reservation Room:      {{ Reservation.room_room }}</p>
+        <p>Reservation Building:  {{ Reservation.room_building_building }}</p>
+
+        <p>
+            <a href="{% url 'reservation_edit' Reservation.pk %}">edit</a>
+            |
+            <a href="{% url 'reservation_delete' Reservation.pk %}">delete</a>
+        </p>
+
+    </div>
+    <div>
+        <em>
+            <a href="{ $ url 'reservation_create' %}">Create new Reservation</a>
+        </em>
+    </div>
+    {% endfor %}
+{% endblock %}

@@ -54,6 +54,13 @@ def login(request):
         if user.is_active():
             login(request,user)
 
+def login_success(request):
+    if request.user.groups.filter(name="admin").exists():
+        return redirect('admin_home')
+    elif request.user.groups.filter(name="manager").exists():
+        return redirect('manager_home')
+    else:
+        return redirect('user_home')
 
 def logout(request):
     logout(request)

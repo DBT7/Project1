@@ -42,6 +42,34 @@ class ReservationForm(forms.Form):
     user_user = forms.ModelChoiceField(queryset=User.objects.all())
     room_room = forms.ModelChoiceField(queryset=Room.objects.all())
 
+class AdminHome(ListView):
+    model = Reservation
+
+#TODO - need to bring down the results to just the signed in user. Will be part of the get_context_data
+    def get_context_data(self, **kwargs):
+        form = ReservationForm
+        context = super(AdminHome, self).get_context_data(**kwargs)
+        context['form'] = form
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AdminHome, self).dispatch(request,*args, **kwargs)
+
+class ManagerHome(ListView):
+    model = Reservation
+
+#TODO - need to bring down the results to just the signed in user. Will be part of the get_context_data
+    def get_context_data(self, **kwargs):
+        form = ReservationForm
+        context = super(ManagerHome, self).get_context_data(**kwargs)
+        context['form'] = form
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ManagerHome, self).dispatch(request,*args, **kwargs)
+
 class UserHome(ListView):
     model = Reservation
 

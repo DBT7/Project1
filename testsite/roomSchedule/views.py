@@ -68,8 +68,8 @@ class ReservationDetail(DetailView):
 class ReservationCreate(CreateView):
     model=Reservation
     fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room', 'room_building_building']
-    #TODO - need to define a success url that will bring back to homepage
-    success_url = 'home/'
+    success_url = reverse_lazy('user_home')
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationCreate, self).dispatch(request,*args, **kwargs)
@@ -77,9 +77,8 @@ class ReservationCreate(CreateView):
 class ReservationUpdate(UpdateView):
     model=Reservation
     fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room', 'room_building_building']
+    success_url = reverse_lazy('user_home')
 
-    #TODO - need to define a success url that will bring back to homepage
-    success_url = 'home/'
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationUpdate, self).dispatch(request,*args, **kwargs)

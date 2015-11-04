@@ -36,7 +36,6 @@ def user_homepage(request):
         return render(request, 'roomSchedule/reservation_list.html', context )
 
 class ReservationForm(forms.Form):
-    reservation_id = forms.IntegerField()
     reservation_dt = forms.DateTimeField()
     duration = forms.IntegerField()
     user_user = forms.ModelChoiceField(queryset=User.objects.all())

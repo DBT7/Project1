@@ -21,7 +21,7 @@ class Address(models.Model):
         db_table = 'address'
 
 class Building(models.Model):
-    building_id = models.IntegerField(db_column='Building_id', primary_key=True)  # Field name made lowercase.
+    building_id = models.AutoField(db_column='Building_id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -29,21 +29,21 @@ class Building(models.Model):
 
 
 class Duration(models.Model):
-    duration_id = models.IntegerField(db_column='Duration_id', primary_key=True)  # Field name made lowercase.
+    duration_id = models.AutoField(db_column='Duration_id', primary_key=True)  # Field name made lowercase.
     duration = models.IntegerField(db_column='Duration', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         db_table = 'duration'
 
 class Organization(models.Model):
-    organization_id = models.IntegerField(db_column='Organization_id', primary_key=True)  # Field name made lowercase.
+    organization_id = models.AutoField(db_column='Organization_id', primary_key=True)  # Field name made lowercase.
     orgname = models.CharField(db_column='OrgName', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         db_table = 'organization'
 
 class Recurrence(models.Model):
-    recurrence_id = models.IntegerField(db_column='Recurrence_id', primary_key=True)  # Field name made lowercase.
+    recurrence_id = models.AutoField(db_column='Recurrence_id', primary_key=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=45, blank=True, null=True)  # Field name made lowercase.
     reservation_reservation = models.ForeignKey('Reservation', db_column='Reservation_Reservation_id', blank=True, null= True)  # Field name made lowercase.
 
@@ -52,7 +52,7 @@ class Recurrence(models.Model):
 
 
 class Reservation(models.Model):
-    reservation_id = models.IntegerField(db_column='Reservation_id', primary_key=True)  # Field name made lowercase.
+    reservation_id = models.AutoField(db_column='Reservation_id', primary_key=True)  # Field name made lowercase.
     reservation_dt = models.DateTimeField(db_column='Reservation_dt')  # Field name made lowercase.
     duration = models.IntegerField(db_column='Duration', blank=True, null=True)  # Field name made lowercase.
     user_user = models.ForeignKey(auth.models.User)  # Field name made lowercase.
@@ -65,7 +65,7 @@ class Reservation(models.Model):
 
 
 class Resource(models.Model):
-    resouce_id = models.IntegerField(db_column='Resouce_id', primary_key=True)  # Field name made lowercase.
+    resouce_id = models.AutoField(db_column='Resouce_id', primary_key=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=45, blank=True, null=True)  # Field name made lowercase.
     room_room = models.ForeignKey('Room', db_column='Room_Room_id', related_name='resource_room')  # Field name made lowercase.
     room_building_building = models.ForeignKey('Room', db_column='Room_Building_Building_id')  # Field name made lowercase.

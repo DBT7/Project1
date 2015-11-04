@@ -4,6 +4,8 @@ from django.http import HttpResponse, Http404
 # Create your views here.
 import MySQLdb
 
+
+
 def book_list(request):
     db=MySQLdb.connect(user='root',db='test',host='localhost')
     

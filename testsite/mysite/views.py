@@ -45,26 +45,22 @@ def my_view(request):
     if not request.user.is_authenticated():
         return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
 
-
-
-
-
-def login(request ):
+def login(request):
     username = request.POST['username']
     password = request.POST['password']
 
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active():
-            login(request, user)
-            # redirect to correct home page
-        else:
-            print 'TODO'
-            # redirect to inactive user page
-    else:
-        print 'TODO'
+            login(request,user)
 
-        # Return invalid login error
+def login_success(request):
+    if request.user.groups.filter(name="admin").exists():
+        return redirect('admin_home')
+    elif request.user.groups.filter(name="manager").exists():
+        return redirect('manager_home')
+    else:
+        return redirect('user_home')
 
 def logout(request):
     logout(request)

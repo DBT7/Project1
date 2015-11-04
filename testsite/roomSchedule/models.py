@@ -10,6 +10,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib import auth
 
 
 class Address(models.Model):
@@ -17,8 +18,9 @@ class Address(models.Model):
     building_building = models.ForeignKey('Building', db_column='Building_Building_id')  # Field name made lowercase.
 
     class Meta:
+
         
-        db_table = 'Address'
+        db_table = 'address'
 
 
 class Admin(models.Model):
@@ -36,7 +38,7 @@ class Building(models.Model):
 
     class Meta:
         
-        db_table = 'Building'
+        db_table = 'building'
 
 
 class Manager(models.Model):
@@ -49,13 +51,22 @@ class Manager(models.Model):
         db_table = 'Manager'
 
 
+
+class Duration(models.Model):
+    duration_id = models.IntegerField(db_column='Duration_id', primary_key=True)  # Field name made lowercase.
+    duration = models.IntegerField(db_column='Duration', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'duration'
+
+
 class Organization(models.Model):
     organization_id = models.IntegerField(db_column='Organization_id', primary_key=True)  # Field name made lowercase.
     orgname = models.CharField(db_column='OrgName', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         
-        db_table = 'Organization'
+        db_table = 'organization'
 
 
 class Person(models.Model):
@@ -72,23 +83,31 @@ class Person(models.Model):
 class Recurrence(models.Model):
     recurrence_id = models.IntegerField(db_column='Recurrence_id', primary_key=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    reservation_reservation = models.ForeignKey('Reservation', db_column='Reservation_Reservation_id', blank=True, null= True)  # Field name made lowercase.
 
     class Meta:
         
-        db_table = 'Recurrence'
+        db_table = 'recurrence'
+
 
 
 class Reservation(models.Model):
     reservation_id = models.IntegerField(db_column='Reservation_id', primary_key=True)  # Field name made lowercase.
     reservation_dt = models.DateTimeField(db_column='Reservation_dt')  # Field name made lowercase.
-    room_building_building = models.ForeignKey('Room', db_column='Room_Building_Building_id',related_name="reserve_build")  # Field name made lowercase.
-    room_room = models.ForeignKey('Room', db_column='Room_Room_id',related_name="reserve_room")  # Field name made lowercase.
-    recurrence_recurrence = models.ForeignKey(Recurrence, db_column='Recurrence_Recurrence_id')  # Field name made lowercase.
-    user_user = models.ForeignKey('User', db_column='User_User_id')  # Field name made lowercase.
+
+         
+    duration = models.IntegerField(db_column='Duration', blank=True, null=True)  # Field name made lowercase.
+    user_user = models.ForeignKey(auth.models.User)  # Field name made lowercase.
+    room_room = models.ForeignKey('Room', db_column='Room_Room_id')  # Field name made lowercase.
+    room_building_building = models.ForeignKey('Room', db_column='Room_Building_Building_id',
+         related_name='reservation_room', blank=True, null=True)  # Field name made lowercase
+
+
+    
 
     class Meta:
         
-        db_table = 'Reservation'
+        db_table = 'reservation'
 
 
 class Resource(models.Model):
@@ -104,17 +123,34 @@ class Resource(models.Model):
         db_table = 'Resource'
         unique_together = ['room_room', 'room_building_building']
 
+   
+
+    class Meta:
+        db_table = 'reservation'
+
+
+class Resource(models.Model):
+    resouce_id = models.IntegerField(db_column='Resouce_id', primary_key=True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    room_room = models.ForeignKey('Room', db_column='Room_Room_id', related_name='resource_room')  # Field name made lowercase.
+    room_building_building = models.ForeignKey('Room', db_column='Room_Building_Building_id')  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'resource'
+
+
 
 class Room(models.Model):
     room_id = models.IntegerField(db_column='Room_id')  # Field name made lowercase.
-    building_building = models.ForeignKey(Building, db_column='Building_Building_id')  # Field name made lowercase.
+
+    building_building = models.ForeignKey(Building, db_column='Building_Building_id', related_name='room_building' )  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    capacity = models.IntegerField(db_column='Capacity', blank=True, null=True)  # Field name made lowercase.
+    capacity = models.IntegerField(db_column='Capacity')  # Field name made lowercase.
 
     class Meta:
-        
-        db_table = 'Room'
-        unique_together = ('room_id', 'building_building')
+        db_table = 'room'
+        unique_together = (('room_id', 'building_building'),)
+
 
 
 class User(models.Model):
@@ -137,3 +173,4 @@ class DjangoMigrations(models.Model):
     class Meta:
         
         db_table = 'django_migrations'
+

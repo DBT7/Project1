@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
+
 from django.contrib.auth import authenticate, login, views
 from django.conf import settings
 from django.shortcuts import redirect
@@ -12,9 +13,11 @@ from models import Reservation
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy, reverse
+
 # Create your views here.
 
 def search_form(request):
+    
     return render(request,'search_form.html')
 
 def search(request):
@@ -23,6 +26,7 @@ def search(request):
     else:
         message="You didn't specify any search criteria"
     return HttpResponse(message)
+
 
 # Kept as example of what needs to be done in the homepage so that only the current users reservations are loaded.
 def user_homepage(request):
@@ -118,3 +122,4 @@ class ReservationDelete(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationDelete, self).dispatch(request,*args, **kwargs)
+

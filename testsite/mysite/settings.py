@@ -86,7 +86,7 @@ DATABASES = {
         
         'NAME': 'dbproject',
        'USER':'root',
-        'PASSWORD':'100515',
+        'PASSWORD':'',
     }
 }
 

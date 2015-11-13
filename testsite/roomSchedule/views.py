@@ -55,6 +55,9 @@ class AdminHome(ListView):
         context['form'] = form
         return context
 
+    def get_queryset(self):
+        return Reservation.objects.filter(user_user = self.request.user)
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(AdminHome, self).dispatch(request,*args, **kwargs)
@@ -69,6 +72,9 @@ class ManagerHome(ListView):
         context['form'] = form
         return context
 
+    def get_queryset(self):
+        return Reservation.objects.filter(user_user = self.request.user)
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ManagerHome, self).dispatch(request,*args, **kwargs)
@@ -82,6 +88,9 @@ class UserHome(ListView):
         context = super(UserHome, self).get_context_data(**kwargs)
         context['form'] = form
         return context
+
+    def get_queryset(self):
+        return Reservation.objects.filter(user_user = self.request.user)
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

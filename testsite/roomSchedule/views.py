@@ -13,6 +13,7 @@ from models import Reservation
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy, reverse
+from datetime import datetime
 
 # Create your views here.
 
@@ -48,7 +49,6 @@ class ReservationForm(forms.Form):
 class AdminHome(ListView):
     model = Reservation
 
-#TODO - need to bring down the results to just the signed in user. Will be part of the get_context_data
     def get_context_data(self, **kwargs):
         form = ReservationForm
         context = super(AdminHome, self).get_context_data(**kwargs)
@@ -56,7 +56,7 @@ class AdminHome(ListView):
         return context
 
     def get_queryset(self):
-        return Reservation.objects.filter(user_user = self.request.user)
+        return Reservation.objects.filter(user_user = self.request.user).exclude(reservation_dt__lte = datetime.now())
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -65,7 +65,6 @@ class AdminHome(ListView):
 class ManagerHome(ListView):
     model = Reservation
 
-#TODO - need to bring down the results to just the signed in user. Will be part of the get_context_data
     def get_context_data(self, **kwargs):
         form = ReservationForm
         context = super(ManagerHome, self).get_context_data(**kwargs)
@@ -73,7 +72,7 @@ class ManagerHome(ListView):
         return context
 
     def get_queryset(self):
-        return Reservation.objects.filter(user_user = self.request.user)
+        return Reservation.objects.filter(user_user = self.request.user).exclude(reservation_dt__lte = datetime.now())
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -82,7 +81,6 @@ class ManagerHome(ListView):
 class UserHome(ListView):
     model = Reservation
 
-#TODO - need to bring down the results to just the signed in user. Will be part of the get_context_data
     def get_context_data(self, **kwargs):
         form = ReservationForm
         context = super(UserHome, self).get_context_data(**kwargs)
@@ -90,7 +88,7 @@ class UserHome(ListView):
         return context
 
     def get_queryset(self):
-        return Reservation.objects.filter(user_user = self.request.user)
+        return Reservation.objects.filter(user_user = self.request.user).exclude(reservation_dt__lte = datetime.now())
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

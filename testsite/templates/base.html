@@ -19,11 +19,11 @@
     						<h2>Welcome {{ user.username }}</h2>
 							<p>
 								<a href="{% url 'password_change' %}">Change Password</a>
-    							<a href="{% url 'logout' %}">logout</a>
+    							<a href="{% url 'logout'%}?next=/login">logout</a>
 							</p>
 						</p>
 					{% else %}
-    					<p>Welcome, Guest <a href="{% url 'login' %}">[login]</a></p>
+    					<p>Welcome, Guest <a href="{% url 'login' %}">login</a></p>
 					{% endif %}
 				</div>
 			</div>

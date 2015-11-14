@@ -64,7 +64,6 @@ def login_success(request):
 
 def logout(request):
     logout(request)
-    # Redirect to a success page
 
 def password_change(request):
     template_response=views.password_change(request)

@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from models import *
 from django import forms
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from models import Reservation
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -130,3 +130,22 @@ class ReservationDelete(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationDelete, self).dispatch(request,*args, **kwargs)
 
+class PastReservations(ListView):
+    model = Reservation
+    template_name =  'roomSchedule/past_reservations_list.html'
+
+    def get_context_data(self, **kwargs):
+        form = ReservationForm
+        context = super(PastReservations, self).get_context_data(**kwargs)
+        context['form'] = form
+        return context
+
+    def get_queryset(self):
+        return Reservation.objects.filter(user_user = self.request.user).exclude(reservation_dt__gte = datetime.now())
+
+    def get_template_names(self):
+          return self.template_name
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(PastReservations, self).dispatch(request,*args, **kwargs)

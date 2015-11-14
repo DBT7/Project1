@@ -2,7 +2,7 @@
 
 {% block content %}
     <div>
-        <h1>Current Reservations</h1>
+        <h1>Past Reservations</h1>
     </div>
     {% for Reservation in object_list %}
     <div class="Reservation">
@@ -21,11 +21,4 @@
 
     </div>
     {% endfor %}
-    <div>
-        <em>
-            <a href="/create">Create new Reservation</a>
-            |
-            <a href="{% url 'past_reservations' %}">Make Comments on Past Reservations </a>
-        </em>
-    </div>
 {% endblock %}

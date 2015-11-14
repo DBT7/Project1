@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^user/$',views.UserHome.as_view(), name='user_home'),
     url(r'^manager/$',views.UserHome.as_view(), name='manager_home'),
     url(r'^admin/$',views.UserHome.as_view(), name='admin_home'),
+    url(r'^past/$',views.PastReservations.as_view(template_name = "roomSchedule/past_reservations_list.html"), name='past_reservations'),
     url(r'^(?P<pk>[0-9]+)/$', views.ReservationDetail.as_view(), name='reservation_detail'),
     url(r'create/$', views.ReservationCreate.as_view(), name='reservation_create'),
     url(r'^(?P<pk>[0-9]+)/update/$', views.ReservationUpdate.as_view(), name='reservation_edit'),

@@ -38,7 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'books',
     'roomSchedule',
 )
 
@@ -84,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         
-        'NAME': 'dbproject',
+        'NAME': 'dbproject1',
        'USER':'root',
         'PASSWORD':'',
     }

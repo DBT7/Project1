@@ -26,7 +26,8 @@ from django.contrib import admin
 
 
 #from roomSchedule.models import Address,Building,Person,Organization
-from roomSchedule.models import *
+
+from .models import Reservation,Room,Building
 
 
 admin.site.register(Reservation)

@@ -17,7 +17,6 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from mysite.views import *
-from books.views import *
 
 from roomSchedule import views
 
@@ -38,10 +37,9 @@ urlpatterns = [
     url(r'^hello/$', hello),
     url(r'^time/$',current_datetime),
     url(r'^time/plus/(\d{1,2})/$',hours_ahead),
-    url(r'^meta/$',display_meta),
     url(r'^search_form/$',views.search_form),
     url(r'^search/$',views.search),
-    url(r'^books/',include('books.urls')),
+
     
 
 ]

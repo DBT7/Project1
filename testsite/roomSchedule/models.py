@@ -19,8 +19,8 @@ class Address(models.Model):
 
     class Meta:
 
-        
         db_table = 'address'
+
 
 class Building(models.Model):
     building_id = models.AutoField(db_column='Building_id', primary_key=True)  # Field name made lowercase.
@@ -42,7 +42,6 @@ class Reservation(models.Model):
     resource_id = models.ForeignKey('Resource', db_column='resource_id', blank=True, null=True)
     reservation_comment_id = models.ForeignKey('Comment', db_column='reservation_comment_id', blank=True, null=True)
 
-
     class Meta:
         
         db_table = 'reservation'
@@ -57,7 +56,6 @@ class Resource(models.Model):
         db_table = 'resource'
 
 
-
 class Room(models.Model):
     room_id = models.IntegerField(db_column='Room_id')  # Field name made lowercase.
 
@@ -68,6 +66,7 @@ class Room(models.Model):
     class Meta:
         db_table = 'room'
         unique_together = (('room_id', 'building_building'),)
+
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)

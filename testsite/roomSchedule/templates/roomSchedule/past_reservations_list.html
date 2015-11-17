@@ -12,6 +12,7 @@
         <p>Reservation Owner:     {{ Reservation.user_user }}</p>
         <p>Reservation Room:      {{ Reservation.room_room }}</p>
         <p>Reservation Building:  {{ Reservation.room_building_building }}</p>
+        <p>Reservation Comment:  {{ Reservation.comment_id }}</p>
 
         <p>
             <a href="{% url 'reservation_edit' Reservation.pk %}">edit</a>

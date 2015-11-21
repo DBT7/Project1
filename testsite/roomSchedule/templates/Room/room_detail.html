@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Room ID:        {{ object.room_id }}</h2>
+<p>Building Name:   {{ object.building_building.name }}</p>
+<p>Name:            {{ object.name }}</p>
+<p>Capacity:        {{ object.capacity }}</p>
+<p>Resource:        {{ object.resource.title }}</p>
+
+<a href="{% url 'room_edit' object.pk %}">Edit</a>
+|
+<a href="{% url 'room_delete' object.pk %}">Delete</a>
+
+{% endblock %}

@@ -23,7 +23,7 @@
     {% endfor %}
     <div>
         <em>
-            <a href="/create">Create new Reservation</a>
+            <a href="{% url 'reservation_create' %}">Create new Reservation</a>
             |
             <a href="{% url 'past_reservations' %}">Make Comments on Past Reservations </a>
         </em>

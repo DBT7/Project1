@@ -9,8 +9,8 @@
 <p>Reservation Room:       {{ object.room_room.name }}</p>
 <p>Reservation Building:   {{ object.room_room.building_building.name }}</p>
 
-<a href="{% url 'comment_edit' object.pk %}">Edit</a>
+<a href="{% url 'reservation_edit' object.pk %}">Edit</a>
 |
-<a href="{% url 'comment_delete' object.pk %}">Delete</a>
+<a href="{% url 'reservation_delete' object.pk %}">Delete</a>
 
 {% endblock %}

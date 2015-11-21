@@ -28,9 +28,9 @@ urlpatterns = [
 
     # Home Page urls
     url(r'^home/', login_success, name='home'),
-    url(r'^user/$',views.UserHome.as_view(), name='user_home'),
-    url(r'^manager/$',views.UserHome.as_view(), name='manager_home'),
-    url(r'^admin/$',views.UserHome.as_view(), name='admin_home'),
+    url(r'^user/$',views.UserHome.as_view(template_name="roomSchedule/reservation_list.html"), name='user_home'),
+    url(r'^manager/$',views.UserHome.as_view(template_name="roomSchedule/reservation_list_manager.html"), name='manager_home'),
+    url(r'^admin/$',views.UserHome.as_view(template_name="roomSchedule/reservation_list_admin.html"), name='admin_home'),
 
     # Reservation urls
     url(r'^pastreservation/$',views.PastReservations.as_view(template_name = "roomSchedule/past_reservations_list.html"), name='past_reservations'),

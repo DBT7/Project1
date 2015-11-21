@@ -227,7 +227,15 @@ class ResourceDelete(DeleteView):
         return super(ResourceDelete, self).dispatch(request, *args, **kwargs)
 
 
+
 # TODO - create views that will create, update and delete rooms.
+
+class RoomForm(forms.Form):
+    building_building=forms.ModelChoiceField(queryset=Building.objects.all())
+    name = forms.CharField(max_length=45)
+    capacity = forms.IntegerField()
+    resource = forms.ModelChoiceField(queryset=Resource.objects.all())
+
 class RoomList(ListView):
     model = Room
 
@@ -237,6 +245,45 @@ class RoomList(ListView):
     @method_decorator(login_required)
     def dispach(self, request, *args, **kwargs):
         return super(RoomList, self).dispatch(self,*args, **kwargs)
+
+class RoomDetail(DetailView):
+    model = Room
+    fields = ['room_id', 'building_building', 'name', 'capacity', 'resource']
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(RoomDetail, self).dispatch(request, *args, **kwargs)
+
+class RoomCreate(CreateView):
+    model = Room
+    fields = ['room_id', 'building_building', 'name', 'capacity', 'resource']
+
+    def get_context_data(self, **kwargs):
+        form = RoomForm
+        context = super(RoomCreate, self).get_context_data(**kwargs)
+        context['form'] = form
+        return context
+
+class RoomUpdate(UpdateView):
+    model = Room
+    fields = ['room_id', 'building_building', 'name', 'capacity', 'resource']
+
+    # TODO - define a success_url
+    #success_url =
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(ResourceUpdate, self).dispatch(request, *args, **kwargs)
+
+class RoomDelete(DeleteView):
+    model = Room
+
+    # TODO - define a success_url
+    #success_url =
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ResourceDelete, self).dispach(request, *args, **kwargs)
+
 
 
 

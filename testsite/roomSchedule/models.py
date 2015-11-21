@@ -12,16 +12,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib import auth
 
-
-class Address(models.Model):
-    address = models.CharField(db_column='Address', primary_key=True, max_length=45)  # Field name made lowercase.
-    building_building = models.ForeignKey('Building', db_column='Building_Building_id')  # Field name made lowercase.
-
-    class Meta:
-
-        db_table = 'address'
-
-
 class Building(models.Model):
     building_id = models.AutoField(db_column='Building_id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
@@ -37,8 +27,6 @@ class Reservation(models.Model):
     duration = models.IntegerField(db_column='Duration', blank=True, null=True)  # Field name made lowercase.
     user_user = models.ForeignKey(auth.models.User)  # Field name made lowercase.
     room_room = models.ForeignKey('Room', db_column='Room_Room_id')  # Field name made lowercase.
-    room_building_building = models.ForeignKey('Room', db_column='Room_Building_Building_id',
-         related_name='reservation_room', blank=True, null=True)  # Field name made lowercase
     resource_id = models.ForeignKey('Resource', db_column='resource_id', blank=True, null=True)
     reservation_comment_id = models.ForeignKey('Comment', db_column='reservation_comment_id', blank=True, null=True)
 
@@ -57,15 +45,13 @@ class Resource(models.Model):
 
 
 class Room(models.Model):
-    room_id = models.IntegerField(db_column='Room_id')  # Field name made lowercase.
-
+    room_id = models.AutoField(db_column='Room_id', primary_key=True)  # Field name made lowercase.
     building_building = models.ForeignKey(Building, db_column='Building_Building_id', related_name='room_building' )  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
     capacity = models.IntegerField(db_column='Capacity')  # Field name made lowercase.
 
     class Meta:
         db_table = 'room'
-        unique_together = (('room_id', 'building_building'),)
 
 
 class Comment(models.Model):

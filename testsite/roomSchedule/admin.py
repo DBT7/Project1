@@ -27,12 +27,14 @@ from django.contrib import admin
 
 #from roomSchedule.models import Address,Building,Person,Organization
 
-from .models import Reservation,Room,Building
+from .models import Reservation, Room, Building, Comment, Resource
 
 
 admin.site.register(Reservation)
 admin.site.register(Room)
 admin.site.register(Building)
+admin.site.register(Resource)
+admin.site.register(Comment)
 
 
 

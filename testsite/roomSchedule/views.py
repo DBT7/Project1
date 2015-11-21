@@ -96,7 +96,7 @@ class UserHome(ListView):
 
 class ReservationDetail(DetailView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room', 'room_building_building']
+    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -105,7 +105,7 @@ class ReservationDetail(DetailView):
 #
 class ReservationCreate(CreateView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room', 'room_building_building']
+    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']
     success_url = reverse_lazy('user_home')
 
     @method_decorator(login_required)
@@ -114,7 +114,7 @@ class ReservationCreate(CreateView):
 
 class ReservationUpdate(UpdateView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room', 'room_building_building']
+    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']
     success_url = reverse_lazy('user_home')
 
     @method_decorator(login_required)
@@ -149,3 +149,27 @@ class PastReservations(ListView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(PastReservations, self).dispatch(request,*args, **kwargs)
+
+class ResourceList(ListView):
+    model = Resource
+
+    def get_queryset(self):
+        return Resource.objects.all()
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ResourceList, self).dispatch(request, *args, **kwargs)
+
+class RoomList(ListView):
+    model = Room
+
+    #TODO - Update the queryset so that it only gets the ones of the of the selected resource if it is called without a resource
+    def get_queryset(self):
+        return Room.objects.all()
+
+    @method_decorator(login_required)
+    def dispach(self, request, *args, **kwargs):
+        return super(RoomList, self).dispatch(self,*args, **kwargs)
+
+#class TimeList(TemplateView):
+

@@ -10,8 +10,8 @@
         <p>Reservation DateTime:  {{ Reservation.reservation_dt }}</p>
         <p>Reservation Blocks:    {{ Reservation.duration }}</p>
         <p>Reservation Owner:     {{ Reservation.user_user }}</p>
-        <p>Reservation Room:      {{ Reservation.room_room }}</p>
-        <p>Reservation Building:  {{ Reservation.room_building_building }}</p>
+        <p>Reservation Room:      {{ Reservation.room_room.name }}</p>
+        <p>Reservation Building:  {{ Reservation.room_room.building_building.name }}</p>
 
         <p>
             <a href="{% url 'reservation_edit' Reservation.pk %}">edit</a>
@@ -26,6 +26,11 @@
             <a href="/create">Create new Reservation</a>
             |
             <a href="{% url 'past_reservations' %}">Make Comments on Past Reservations </a>
+        </em>
+    </div>
+    <div>
+        <em>
+            <a href = "{% url 'resource_list' %}">Choose a Resource</a>
         </em>
     </div>
 {% endblock %}

@@ -6,8 +6,8 @@
 <p>Reservation DateTime:   {{ object.reservation_dt }}</p>
 <p>Reservation Blocks:     {{ object.duration }}</p>
 <p>Reservation Owner:      {{ object.user_user }}</p>
-<p>Reservation Room:       {{ object.room_room }}</p>
-<p>Reservation Building:   {{ object.room_building_building }}</p>
+<p>Reservation Room:       {{ object.room_room.name }}</p>
+<p>Reservation Building:   {{ object.room_room.building_building.name }}</p>
 
 <a href="{% url 'comment_edit' object.pk %}">Edit</a>
 |

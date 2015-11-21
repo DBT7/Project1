@@ -27,7 +27,6 @@ class Reservation(models.Model):
     duration = models.IntegerField(db_column='Duration', blank=True, null=True)  # Field name made lowercase.
     user_user = models.ForeignKey(auth.models.User, blank=True, null=True)  # Field name made lowercase.
     room_room = models.ForeignKey('Room', db_column='Room_Room_id')  # Field name made lowercase.
-    resource_id = models.ForeignKey('Resource', db_column='resource_id', blank=True, null=True)
     reservation_comment_id = models.ForeignKey('Comment', db_column='reservation_comment_id', blank=True, null=True)
 
     class Meta:

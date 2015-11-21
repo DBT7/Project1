@@ -57,6 +57,7 @@ class Room(models.Model):
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
     text = models.TextField(max_length=1024)
+    rank = models.IntegerField(blank= True, null=True)
 
     class Meta:
 

@@ -156,6 +156,8 @@ class PastReservations(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(PastReservations, self).dispatch(request,*args, **kwargs)
 
+# Would work if we put in a bunch of blank reservations for each of the rooms.
+# Each time a room is created it would have to create all of the blank reservations.
 class AvailableReservationList(ListView):
     model = Reservation
 
@@ -167,6 +169,12 @@ class AvailableReservationList(ListView):
         return super(AvailableReservationList,self).dispatch(self, request, *args, **kwargs)
 
 # TODO - create views that create, update and delete resources.
+# Still have to create the HTML and add to the urls.py
+
+class ResourceForm(forms.Form):
+    title = forms.CharField(max_length=200)
+    description = forms.CharField(max_length=45)
+
 class ResourceList(ListView):
     model = Resource
 
@@ -176,6 +184,48 @@ class ResourceList(ListView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ResourceList, self).dispatch(request, *args, **kwargs)
+
+class ResourceDetail(DetailView):
+    model = Resource
+    fields = ['resource_id', 'title', 'description']
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ResourceDetail, self).dispatch(request, *args, **kwargs)
+
+class ResourceCreate(CreateView):
+    model = Resource
+    fields = ['resource_id', 'title', 'description']
+
+    def get_context_data(self, **kwargs):
+        form = ResourceForm
+        context = super(ResourceCreate, self).get_context_data(**kwargs)
+        context['form'] = form
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ResourceCreate, self).dispatch(request, *args, **kwargs)
+
+class ResourceUpdate(UpdateView):
+    model = Resource
+    fields = ['resource_id', 'title', 'description']
+    # TODO - define a success_url
+    #success_url
+
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(ResourceUpdate, self).dispatch(request, *args, **kwargs)
+
+class ResourceDelete(DeleteView):
+    model = Resource
+    # TODO - define a success_url
+    #success_url =
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ResourceDelete, self).dispatch(request, *args, **kwargs)
+
 
 # TODO - create views that will create, update and delete rooms.
 class RoomList(ListView):

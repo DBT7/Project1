@@ -10,7 +10,7 @@
         <p>Title :          {{ Resource.title }}</p>
         <p>Description:     {{ Resource.description }}</p>
         <p>
-            <a href="{% url 'room_list' Resource.pk %}"> Room List</a>
+            <a href="{% url 'room_list_from_resource' Resource.pk %}"> Room List</a>
         </p>
     </div>
     {% endfor %}

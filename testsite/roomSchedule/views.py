@@ -175,6 +175,7 @@ class ResourceForm(forms.Form):
     title = forms.CharField(max_length=200)
     description = forms.CharField(max_length=45)
 
+# This resource list view can be called the Admin Homepage and When the user is trying to make a reservation
 class ResourceList(ListView):
     model = Resource
 
@@ -227,7 +228,11 @@ class ResourceDelete(DeleteView):
         return super(ResourceDelete, self).dispatch(request, *args, **kwargs)
 
 
-
+# TODO - there will need to be separate vies for the Room list.
+# 1. to be called from the admin page and when the user wants to make a specific reservation based on the room.
+#       will be generic and will show all of the room objects
+# 2. to be called when the user is making reservations by choosing a reservation first.
+#       will filter by using **kwargs
 # TODO - create views that will create, update and delete rooms.
 
 class RoomForm(forms.Form):
@@ -237,6 +242,16 @@ class RoomForm(forms.Form):
     resource = forms.ModelChoiceField(queryset=Resource.objects.all())
 
 class RoomList(ListView):
+    model = Room
+
+    def get_queryset(self):
+        return Room.objects.all()
+
+    @method_decorator(login_required)
+    def dispach(self, request, *args, **kwargs):
+        return super(RoomList, self).dispatch(self,*args, **kwargs)
+
+class RoomListFromResource(ListView):
     model = Room
 
     def get_queryset(self):

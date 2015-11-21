@@ -108,6 +108,12 @@ class ReservationCreate(CreateView):
     fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']
     success_url = reverse_lazy('user_home')
 
+    def get_context_data(self, **kwargs):
+        form = ReservationForm
+        context = super(ReservationCreate, self).get_context_data(**kwargs)
+        context['form'] = form
+        return context
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationCreate, self).dispatch(request,*args, **kwargs)
@@ -150,6 +156,17 @@ class PastReservations(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(PastReservations, self).dispatch(request,*args, **kwargs)
 
+class AvailableReservationList(ListView):
+    model = Reservation
+
+    def get_queryset(self):
+        return Reservation.objectes.all()
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AvailableReservationList,self).dispatch(self, request, *args, **kwargs)
+
+# TODO - create views that create, update and delete resources.
 class ResourceList(ListView):
     model = Resource
 
@@ -160,16 +177,16 @@ class ResourceList(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(ResourceList, self).dispatch(request, *args, **kwargs)
 
+# TODO - create views that will create, update and delete rooms.
 class RoomList(ListView):
     model = Room
 
-    #TODO - Update the queryset so that it only gets the ones of the of the selected resource if it is called without a resource
     def get_queryset(self):
-        return Room.objects.all()
+        return Room.objects.filter(resource=self.kwargs['resource'])
 
     @method_decorator(login_required)
     def dispach(self, request, *args, **kwargs):
         return super(RoomList, self).dispatch(self,*args, **kwargs)
 
-#class TimeList(TemplateView):
+
 

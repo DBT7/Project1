@@ -41,6 +41,8 @@ else:
     start_datetime = datetime.datetime(year=start_date.year, month=start_date.month, day=start_date.day, hour=8 )
     end_datetime = datetime.datetime(year=end_date.year, month=end_date.month, day=end_date.day, hour=17)
     time_increment = datetime.timedelta(minutes=30)
+    beginning_of_business = datetime.time(hour=8)
+    end_of_business = datetime.time(hour=17)
 
     reservation_id = 1
 
@@ -48,22 +50,19 @@ else:
         time = start_datetime
         while time < end_datetime:
 
-            if time.day < 5:
-                sql = "INSERT INTO reservation (Reservation_id, Reservation_dt, Room_Room_id) VALUES ( '{}', '{}', '{}' );".format(reservation_id, time, room)
+            # monday = 0 and friday = 4 # between 8 and 5
+            if time.weekday() < 5 and beginning_of_business< time.time() < end_of_business:
+                sql = "INSERT INTO reservation (Reservation_dt, Room_Room_id) VALUES ('{}', '{}' );".format(time, room)
                 try:
                     cursor.execute(sql)
                     db.commit()
+                    print time
                 except:
                     print "Failed"
                     print sql
                     db.rollback()
 
-
-                # Increment the reservation_id
-            reservation_id+=1
-
             # Increment the time
-            print time
             time += time_increment
 
 # Disconnect from the database

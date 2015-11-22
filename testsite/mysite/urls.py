@@ -39,6 +39,7 @@ urlpatterns = [
     #url(r'(?P<room>\w+)/create/$', views.ReservationCreate.as_view(), name='reservation_create'),
     url(r'^(?P<pk>[0-9]+)/updatereservation/$', views.ReservationUpdate.as_view(), name='reservation_edit'),
     url(r'^(?P<pk>[0-9]+)/deletereservation/$', views.ReservationDelete.as_view(), name='reservation_delete'),
+    url(r'^(?P<room>\w+)/availablereservation/$', views.AvailableReservationList.as_view(template_name='roomSchedule/reservation_list_available_times.html'), name='available_reservations' ),
 
     # Resource urls
     url(r'^resource/$',views.ResourceList.as_view(template_name = "Resource/resource_list.html"), name='resource_list'),

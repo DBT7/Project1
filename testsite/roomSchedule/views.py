@@ -8,12 +8,13 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from models import *
 from django import forms
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from models import Reservation
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy, reverse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Create your views here.
 
@@ -28,32 +29,8 @@ def search(request):
         message="You didn't specify any search criteria"
     return HttpResponse(message)
 
-
-# Kept as example of what needs to be done in the homepage so that only the current users reservations are loaded.
-def user_homepage(request):
-    if not request.user.is_authenticated():
-        # If there is not a current session this will allow the user to login then see the page that is requested
-        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
-
-    else:
-        object_list = Reservation.objects.filter(user_user=request.user)
-        context = {'object_list':object_list}
-        return render(request, 'roomSchedule/reservation_list.html', context )
-
-class ReservationForm(forms.Form):
-    reservation_dt = forms.DateTimeField()
-    duration = forms.IntegerField()
-    user_user = forms.ModelChoiceField(queryset=User.objects.all())
-    room_room = forms.ModelChoiceField(queryset=Room.objects.all())
-
 class AdminHome(ListView):
     model = Reservation
-
-    def get_context_data(self, **kwargs):
-        form = ReservationForm
-        context = super(AdminHome, self).get_context_data(**kwargs)
-        context['form'] = form
-        return context
 
     def get_queryset(self):
         return Reservation.objects.filter(user_user = self.request.user).exclude(reservation_dt__lte = datetime.now())
@@ -65,12 +42,6 @@ class AdminHome(ListView):
 class ManagerHome(ListView):
     model = Reservation
 
-    def get_context_data(self, **kwargs):
-        form = ReservationForm
-        context = super(ManagerHome, self).get_context_data(**kwargs)
-        context['form'] = form
-        return context
-
     def get_queryset(self):
         return Reservation.objects.filter(user_user = self.request.user).exclude(reservation_dt__lte = datetime.now())
 
@@ -80,12 +51,6 @@ class ManagerHome(ListView):
 
 class UserHome(ListView):
     model = Reservation
-
-    def get_context_data(self, **kwargs):
-        form = ReservationForm
-        context = super(UserHome, self).get_context_data(**kwargs)
-        context['form'] = form
-        return context
 
     def get_queryset(self):
         return Reservation.objects.filter(user_user = self.request.user).exclude(reservation_dt__lte = datetime.now())
@@ -102,31 +67,31 @@ class ReservationDetail(DetailView):
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationDetail, self).dispatch(request,*args, **kwargs)
 
-#
 class ReservationCreate(CreateView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']
+    fields = ['reservation_id', 'reservation_dt', 'duration', 'room_room']
     success_url = reverse_lazy('user_home')
-
-    def get_context_data(self, **kwargs):
-        form = ReservationForm
-        context = super(ReservationCreate, self).get_context_data(**kwargs)
-        context['form'] = form
-        return context
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationCreate, self).dispatch(request,*args, **kwargs)
 
+    def form_valid(self, form):
+        form.instance.user_user = self.request.user
+        return super(ReservationCreate, self).form_valid(form)
+
 class ReservationUpdate(UpdateView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']
+    fields = ['reservation_id', 'reservation_dt', 'duration', 'room_room']
     success_url = reverse_lazy('user_home')
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationUpdate, self).dispatch(request,*args, **kwargs)
 
+    def form_valid(self, form):
+        form.instance.user_user = self.request.user
+        return super(ReservationUpdate, self).form_valid(form)
 
 class ReservationDelete(DeleteView):
     model=Reservation
@@ -139,12 +104,6 @@ class ReservationDelete(DeleteView):
 class PastReservations(ListView):
     model = Reservation
     template_name =  'roomSchedule/past_reservations_list.html'
-
-    def get_context_data(self, **kwargs):
-        form = ReservationForm
-        context = super(PastReservations, self).get_context_data(**kwargs)
-        context['form'] = form
-        return context
 
     def get_queryset(self):
         return Reservation.objects.filter(user_user = self.request.user).exclude(reservation_dt__gte = datetime.now())
@@ -162,11 +121,8 @@ class AvailableReservationList(ListView):
     model = Reservation
 
     def get_queryset(self):
-        return Reservation.objectes.all()
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(AvailableReservationList,self).dispatch(self, request, *args, **kwargs)
+        #return Reservation.objects.filter(room_room=self.kwargs['room']).filter(user_user=None).exclude(reservation_dt__lte=datetime.now()).exclude(reservation_dt__gte=datetime.now()+timedelta(days = 1))
+        return Reservation.objects.filter(room_room=self.kwargs['room']).exclude(reservation_dt__lte = datetime.now())#.exclude(reservation_dt__gte=(datetime.now()+timedelta(days = 1)))
 
 # TODO - create views that create, update and delete resources.
 # Still have to create the HTML and add to the urls.py

@@ -24,10 +24,12 @@ class Building(models.Model):
 class Reservation(models.Model):
     reservation_id = models.AutoField(db_column='Reservation_id', primary_key=True)  # Field name made lowercase.
     reservation_dt = models.DateTimeField(db_column='Reservation_dt')  # Field name made lowercase.
+
+    # TODO - remove and fix rest of code - not needed for new layout
     duration = models.IntegerField(db_column='Duration', blank=True, null=True)  # Field name made lowercase.
     user_user = models.ForeignKey(auth.models.User, blank=True, null=True)  # Field name made lowercase.
     room_room = models.ForeignKey('Room', db_column='Room_Room_id')  # Field name made lowercase.
-    reservation_comment_id = models.ForeignKey('Comment', db_column='reservation_comment_id', blank=True, null=True)
+    reservation_comment_id = models.ForeignKey('Comment', db_column='reservation_comment_id')
 
     class Meta:
         
@@ -55,7 +57,7 @@ class Room(models.Model):
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
-    text = models.TextField(max_length=1024)
+    text = models.TextField(max_length=1024, blank=True, null=True)
     rank = models.IntegerField(blank= True, null=True)
 
     class Meta:

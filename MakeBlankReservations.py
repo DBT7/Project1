@@ -1,6 +1,6 @@
 import MySQLdb
 import datetime
-
+import os
 DEBUG = False
 
 # Create a connection to the database
@@ -34,7 +34,15 @@ else:
     #INSERT INTO `dbproject`.`reservation` (`Reservation_id`, `Reservation_dt`, `Room_Room_id`) VALUES ('4', '2015-11-20 08:00:00.000000', '2');
 
     #make sql query
-    current_number_rooms = 2
+    # try:
+    #     cursor.execute('select count(*) from room')
+    #     fetch = cursor.fetchall()[0]
+    #     current_number_rooms = fetch[0]
+    #     print current_number_rooms
+    # except:
+    #     print 'Cannot get number of rooms'
+    #     os.quit()
+    current_number_rooms = 4
     start_date = datetime.date.today()
     date_increment = datetime.timedelta(days = 14)
     end_date = start_date + date_increment
@@ -44,26 +52,39 @@ else:
     beginning_of_business = datetime.time(hour=8)
     end_of_business = datetime.time(hour=17)
 
-    reservation_id = 1
-
+    comment_id = 1
+    total_reservations = 1
     for room in range(1, current_number_rooms+1):
         time = start_datetime
         while time < end_datetime:
 
             # monday = 0 and friday = 4 # between 8 and 5
             if time.weekday() < 5 and beginning_of_business< time.time() < end_of_business:
-                sql = "INSERT INTO reservation (Reservation_dt, Room_Room_id) VALUES ('{}', '{}' );".format(time, room)
+
+                sql_comment = "INSERT INTO comment (text, rank) VALUES (' ', '0');"
                 try:
-                    cursor.execute(sql)
+                    cursor.execute(sql_comment)
+                    db.commit()
+                except:
+                    print 'Failed'
+                    print sql_comment
+                    db.rollback()
+                    raise
+
+                sql_reservation = "INSERT INTO reservation (Reservation_dt, Room_Room_id, reservation_comment_id, user_user_id) VALUES ('{}', '{}', '{}', '1' );".format(time, room, total_reservations)
+                try:
+                    cursor.execute(sql_reservation)
                     db.commit()
                     print time
                 except:
                     print "Failed"
-                    print sql
+                    print sql_reservation
                     db.rollback()
-
+                    raise
+                total_reservations +=1
             # Increment the time
             time += time_increment
+
 
 # Disconnect from the database
 db.close()

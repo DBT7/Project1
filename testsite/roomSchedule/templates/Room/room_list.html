@@ -15,6 +15,7 @@
         <p>
             Add link to take to available times
         </p>
+        <a href="{% url 'available_reservations' Room.pk %}"> Available Reservations</a>
     </div>
     {% endfor %}
 {% endblock %}

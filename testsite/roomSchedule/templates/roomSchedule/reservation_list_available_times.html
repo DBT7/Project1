@@ -2,35 +2,15 @@
 
 {% block content %}
     <div>
-        <h1>Current Reservations</h1>
+        <h1>Current Available Reservations</h1>
     </div>
     {% for Reservation in object_list %}
-    <div class="Reservation">
-        <h2> Reservation ID:      {{ Reservation.reservation_id }}</h2>
-        <p>Reservation DateTime:  {{ Reservation.reservation_dt }}</p>
-        <p>Reservation Blocks:    {{ Reservation.duration }}</p>
-        <p>Reservation Owner:     {{ Reservation.user_user }}</p>
-        <p>Reservation Room:      {{ Reservation.room_room.name }}</p>
-        <p>Reservation Building:  {{ Reservation.room_room.building_building.name }}</p>
-
-        <p>
-            <a href="{% url 'reservation_edit' Reservation.pk %}">edit</a>
-            |
-            <a href="{% url 'reservation_delete' Reservation.pk %}">delete</a>
-        </p>
+    <div class="Reservation" style="width:200px;height:50px;padding:5px;border:10px ridge yellowgreen;">
+        <a href="{% url 'reservation_edit' Reservation.pk %}">{{ Reservation.reservation_dt }}</a>
+        <p>Room: {{Reservation.room_room.name}}</p>
+        <!--<p>Capacity: {{Reservation.room_room.capacity}}</p> -->
 
     </div>
     {% endfor %}
-    <div>
-        <em>
-            <a href="{% url 'reservation_create' %}">Create new Reservation</a>
-            |
-            <a href="{% url 'past_reservations' %}">Make Comments on Past Reservations </a>
-        </em>
-    </div>
-    <div>
-        <em>
-            <a href = "{% url 'resource_list' %}">Choose a Resource</a>
-        </em>
-    </div>
+
 {% endblock %}

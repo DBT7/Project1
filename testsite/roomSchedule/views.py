@@ -69,7 +69,7 @@ class ReservationDetail(DetailView):
 
 class ReservationCreate(CreateView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'room_room']
+    fields = ['reservation_id', 'reservation_dt', 'duration', 'room_room', 'reservation_comment_id']
     success_url = reverse_lazy('user_home')
 
     @method_decorator(login_required)
@@ -83,7 +83,7 @@ class ReservationCreate(CreateView):
 class ReservationUpdate(UpdateView):
     model=Reservation
     fields = ['reservation_id', 'reservation_dt', 'duration', 'room_room']
-    success_url = reverse_lazy('user_home')
+    success_url = reverse_lazy('home')
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -122,14 +122,14 @@ class AvailableReservationList(ListView):
 
     def get_queryset(self):
         #return Reservation.objects.filter(room_room=self.kwargs['room']).filter(user_user=None).exclude(reservation_dt__lte=datetime.now()).exclude(reservation_dt__gte=datetime.now()+timedelta(days = 1))
-        return Reservation.objects.filter(room_room=self.kwargs['room']).exclude(reservation_dt__lte = datetime.now())#.exclude(reservation_dt__gte=(datetime.now()+timedelta(days = 1)))
+        return Reservation.objects.filter(room_room=self.kwargs['room']).filter(user_user = 1).exclude(reservation_dt__lte = datetime.now())
 
 # TODO - create views that create, update and delete resources.
 # Still have to create the HTML and add to the urls.py
 
-class ResourceForm(forms.Form):
-    title = forms.CharField(max_length=200)
-    description = forms.CharField(max_length=45)
+# class ResourceForm(forms.Form):
+#     title = forms.CharField(max_length=200)
+#     description = forms.CharField(max_length=45)
 
 # This resource list view can be called the Admin Homepage and When the user is trying to make a reservation
 class ResourceList(ListView):
@@ -153,12 +153,8 @@ class ResourceDetail(DetailView):
 class ResourceCreate(CreateView):
     model = Resource
     fields = ['resource_id', 'title', 'description']
+    success_url = reverse_lazy('home')
 
-    def get_context_data(self, **kwargs):
-        form = ResourceForm
-        context = super(ResourceCreate, self).get_context_data(**kwargs)
-        context['form'] = form
-        return context
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -167,17 +163,15 @@ class ResourceCreate(CreateView):
 class ResourceUpdate(UpdateView):
     model = Resource
     fields = ['resource_id', 'title', 'description']
-    # TODO - define a success_url
-    #success_url
+    success_url = reverse_lazy('home')
 
-
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ResourceUpdate, self).dispatch(request, *args, **kwargs)
 
 class ResourceDelete(DeleteView):
     model = Resource
-    # TODO - define a success_url
-    #success_url =
+    success_url = reverse_lazy('home')
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -228,6 +222,7 @@ class RoomDetail(DetailView):
 class RoomCreate(CreateView):
     model = Room
     fields = ['room_id', 'building_building', 'name', 'capacity', 'resource']
+    success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         form = RoomForm
@@ -254,6 +249,42 @@ class RoomDelete(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ResourceDelete, self).dispach(request, *args, **kwargs)
+
+class CommentForm(forms.Form):
+    text = forms.CharField(
+        label="Comment",
+        max_length=1024,
+        widget=forms.Textarea)
+    rank = forms.ChoiceField(choices=Comment.RANK_CHOICES)
+
+
+class CommentList(ListView):
+    model = Comment
+
+    # adding a form to a listview
+    def get_context_data(self, **kwargs):
+        form = CommentForm
+        context = super(CommentList, self).get_context_data(**kwargs)
+        context['form'] = form
+        return context
+
+class CommentDetail(DetailView):
+    model = Comment
+
+class CommentCreate(CreateView):
+    model = Comment
+    fields = ['text', 'rank']
+    success_url = reverse_lazy('home')
+
+class CommentUpdate(UpdateView):
+    model = Comment
+    fields = ['text', 'rank']
+    success_url = reverse_lazy('home')
+    #def get_object():
+
+class CommentDelete(DeleteView):
+    model = Comment
+    success_url = reverse_lazy('comment_list')
 
 
 

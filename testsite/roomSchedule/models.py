@@ -56,6 +56,19 @@ class Room(models.Model):
 
 
 class Comment(models.Model):
+    NOT_ACCEPTABLE = 1
+    SLIGHTLY_ACCEPTABLE =2
+    MODERATELY_ACCEPTABLE = 3
+    VERY_ACCEPTABLE=4
+    COMPLETELY_ACCEPTABLE=5
+    RANK_CHOICES = (
+        (NOT_ACCEPTABLE, 'Not Acceptable'),
+        (SLIGHTLY_ACCEPTABLE, 'Slightly Acceptable'),
+        (MODERATELY_ACCEPTABLE, 'Moderately Acceptable'),
+        (VERY_ACCEPTABLE, 'Very Acceptable'),
+        (COMPLETELY_ACCEPTABLE, 'Completely Acceptable')
+    )
+
     comment_id = models.AutoField(primary_key=True)
     text = models.TextField(max_length=1024, blank=True, null=True)
     rank = models.IntegerField(blank= True, null=True)

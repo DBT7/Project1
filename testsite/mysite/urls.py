@@ -58,6 +58,9 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/deleteroom/$', views.RoomDelete.as_view(template_name = "Room/room_confirm_delete.html"), name = "room_delete"),
 
 
+    # Comment urls
+    url(r'^(?P<pk>[0-9]+)/updatecomment/$', views.CommentUpdate.as_view(template_name="Comment/comment_form.html"), name="comment_update"),
+
     # Django adminsite urls
     url(r'^adminsite/', include(admin.site.urls)),
 

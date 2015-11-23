@@ -8,7 +8,6 @@
     <div class="Reservation" style="width:200px;height:50px;padding:5px;border:10px ridge yellowgreen;">
         <a href="{% url 'reservation_edit' Reservation.pk %}">{{ Reservation.reservation_dt }}</a>
         <p>Room: {{Reservation.room_room.name}}</p>
-        <!--<p>Capacity: {{Reservation.room_room.capacity}}</p> -->
 
     </div>
     {% endfor %}

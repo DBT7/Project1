@@ -59,6 +59,17 @@ class UserHome(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(UserHome, self).dispatch(request,*args, **kwargs)
 
+class ReservationList(ListView):
+    model = Reservation
+
+    def get_queryset(self):
+        return Reservation.objects.exclude(user_user = 1).exclude(reservation_dt__lte = datetime.now())
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ReservationList, self).dispatch(request,*args, **kwargs)
+
+
 class ReservationDetail(DetailView):
     model=Reservation
     fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']

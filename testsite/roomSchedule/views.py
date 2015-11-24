@@ -104,9 +104,14 @@ class ReservationUpdate(UpdateView):
         form.instance.user_user = self.request.user
         return super(ReservationUpdate, self).form_valid(form)
 
-class ReservationDelete(DeleteView):
+class ReservationDelete(UpdateView):
     model=Reservation
-    success_url=reverse_lazy('user_home')
+    success_url=reverse_lazy('home')
+    fields = []
+
+    def form_valid(self, form):
+        form.instance.user_user = User.objects.get(pk=1)
+        return super(ReservationDelete, self).form_valid(form)
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

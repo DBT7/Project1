@@ -33,12 +33,12 @@ urlpatterns = [
     url(r'^admin/$',views.UserHome.as_view(template_name="roomSchedule/reservation_list_admin.html"), name='admin_home'),
 
     # Reservation urls
-    url(r'^allreservations/$', views.ReservationList.as_view(template_name = "roomSchedule/reservation_list_all.html"), name='all_reservations'),
+    url(r'^allreservations/$', views.ReservationList.as_view(template_name = "roomSchedule/reservation_list_all.htmla"), name='all_reservations'),
     url(r'^pastreservation/$',views.PastReservations.as_view(template_name = "roomSchedule/past_reservations_list.html"), name='past_reservations'),
     url(r'^(?P<pk>[0-9]+)/detailreservation$', views.ReservationDetail.as_view(), name='reservation_detail'),
     url(r'createreservation/$', views.ReservationCreate.as_view(), name='reservation_create'),
     url(r'^(?P<pk>[0-9]+)/updatereservation/$', views.ReservationUpdate.as_view(), name='reservation_edit'),
-    url(r'^(?P<pk>[0-9]+)/deletereservation/$', views.ReservationDelete.as_view(), name='reservation_delete'),
+    url(r'^(?P<pk>[0-9]+)/deletereservation/$', views.ReservationDelete.as_view(template_name='roomSchedule/reservation_confirm_delete.html' ), name='reservation_delete'),
     url(r'^(?P<room>\w+)/availablereservation/$', views.AvailableReservationList.as_view(template_name='roomSchedule/reservation_list_available_times.html'), name='available_reservations' ),
 
     # Resource urls

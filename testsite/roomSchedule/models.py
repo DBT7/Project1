@@ -76,3 +76,7 @@ class Comment(models.Model):
     class Meta:
 
         db_table = 'comment'
+
+class WaitList(models.Model):
+    user = models.ForeignKey(auth.models.User)
+    reservation = models.ForeignKey(Reservation)

@@ -109,8 +109,26 @@ class ReservationDelete(UpdateView):
     success_url=reverse_lazy('home')
     fields = []
 
+    def send_email_waitlist(self, user):
+        # Send Email to person on waitlist
+        print 'Sending email to user: {} that is on the waitlist'.format(user)
+
     def form_valid(self, form):
+
+        # Set the Reservation back to a blank reservation
         form.instance.user_user = User.objects.get(pk=1)
+
+        # See if that reservation is on the waitlist
+        try:
+            waitlist =WaitList.objects.get(reservation = "{}".format(form.instance.reservation_id))
+        except:
+            # There is not anyone on the waitlist to match that query
+            waitlist = None
+
+        # If it was on the Waitlist then send it to the users for that room on the list
+        if waitlist is not None:
+            for row in waitlist:
+                self.send_email_waitlist(row.user)
         return super(ReservationDelete, self).form_valid(form)
 
     @method_decorator(login_required)
@@ -131,23 +149,20 @@ class PastReservations(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(PastReservations, self).dispatch(request,*args, **kwargs)
 
-# Would work if we put in a bunch of blank reservations for each of the rooms.
-# Each time a room is created it would have to create all of the blank reservations.
 class AvailableReservationList(ListView):
     model = Reservation
 
     def get_queryset(self):
-        #return Reservation.objects.filter(room_room=self.kwargs['room']).filter(user_user=None).exclude(reservation_dt__lte=datetime.now()).exclude(reservation_dt__gte=datetime.now()+timedelta(days = 1))
         return Reservation.objects.filter(room_room=self.kwargs['room']).filter(user_user = 1).exclude(reservation_dt__lte = datetime.now())
 
-# TODO - create views that create, update and delete resources.
-# Still have to create the HTML and add to the urls.py
+class ReservedReservationList(ListView):
+    model = Reservation
 
-# class ResourceForm(forms.Form):
-#     title = forms.CharField(max_length=200)
-#     description = forms.CharField(max_length=45)
-
-# This resource list view can be called the Admin Homepage and When the user is trying to make a reservation
+    def get_queryset(self):
+        return Reservation.objects.filter(room_room=self.kwargs['room']).exclude(user_user = 1).exclude(reservation_dt__lte = datetime.now())
+#
+# RESOURCE VIEWS
+#
 class ResourceList(ListView):
     model = Resource
 
@@ -193,13 +208,9 @@ class ResourceDelete(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super(ResourceDelete, self).dispatch(request, *args, **kwargs)
 
-
-# TODO - there will need to be separate vies for the Room list.
-# 1. to be called from the admin page and when the user wants to make a specific reservation based on the room.
-#       will be generic and will show all of the room objects
-# 2. to be called when the user is making reservations by choosing a reservation first.
-#       will filter by using **kwargs
-# TODO - create views that will create, update and delete rooms.
+#
+# ROOM VIEWS
+#
 
 class RoomForm(forms.Form):
     building_building=forms.ModelChoiceField(queryset=Building.objects.all())
@@ -273,6 +284,9 @@ class CommentForm(forms.Form):
         widget=forms.Textarea)
     rank = forms.ChoiceField(choices=Comment.RANK_CHOICES)
 
+#
+# COMMENT VIEWS
+#
 
 class CommentList(ListView):
     model = Comment
@@ -302,6 +316,21 @@ class CommentDelete(DeleteView):
     model = Comment
     success_url = reverse_lazy('comment_list')
 
+#
+# WAITLIST VIEWS
+#
+
+class WaitListList(ListView):
+    model = WaitList
+
+class WaitListUpdate(UpdateView):
+    model = WaitList
+
+class WaitListCreate(CreateView):
+    model=WaitList
+
+class WaitListDetail(DetailView):
+    model = DeleteView
 
 
 

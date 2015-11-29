@@ -61,6 +61,11 @@ urlpatterns = [
     # Comment urls
     url(r'^(?P<pk>[0-9]+)/updatecomment/$', views.CommentUpdate.as_view(template_name="Comment/comment_form.html"), name="comment_update"),
 
+    # Create Users URLS
+
+    url(r'^createuser/$', views.UserCreate.as_view(template_name = "User/user_form.html"), name = 'user_create'),
+
+
     # Django adminsite urls
     url(r'^adminsite/', include(admin.site.urls)),
 

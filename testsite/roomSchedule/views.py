@@ -332,5 +332,16 @@ class WaitListCreate(CreateView):
 class WaitListDetail(DetailView):
     model = DeleteView
 
+#
+# CREATE USER VIEWS
+#
+
+class UserList(ListView):
+    model = User
+
+class UserCreate(CreateView):
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email', 'password']
+    success_url = reverse_lazy('home')
 
 

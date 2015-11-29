@@ -80,3 +80,14 @@ class Comment(models.Model):
 class WaitList(models.Model):
     user = models.ForeignKey(auth.models.User)
     reservation = models.ForeignKey(Reservation)
+
+class Admin(models.Model):
+    admin = models.ForeignKey(auth.models.User)
+
+class Manager(models.Model):
+    manager = models.ForeignKey(auth.models.User)
+    manager_admin = models.ForeignKey(Admin)
+
+class ReservationUser(models.Model):
+    user = models.ForeignKey(auth.models.User)
+    user_manager = models.ForeignKey(Manager)

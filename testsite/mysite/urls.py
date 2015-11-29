@@ -64,7 +64,15 @@ urlpatterns = [
     # Create Users URLS
 
     url(r'^createuser/$', views.UserCreate.as_view(template_name = "User/user_form.html"), name = 'user_create'),
+    url(r'^createusersuccess/$', views.ReservationUserCreate.as_view(template_name = "ReservationUser/ReservationUser_form.html"), name = 'reservation_user_create'),
 
+    # Create Managers usls
+    url(r'^createmanager/$', views.ManagerCreate.as_view(template_name = "User/user_form.html"), name = 'manager_create'),
+    url(r'^createmanagersuccess/$', views.ReservationManagerCreate.as_view(template_name = "Manager/manager_form.html"), name = 'reservation_Manager_create'),
+
+    # Create Admin urls
+    url(r'^createadmin/$', views.ManagerCreate.as_view(template_name = "User/user_form.html"), name = 'admin_create'),
+    url(r'^createmanagersuccess/$', views.ReservationManagerCreate.as_view(template_name = "Admin/admin_form.html"), name = 'reservation_admin_create'),
 
     # Django adminsite urls
     url(r'^adminsite/', include(admin.site.urls)),

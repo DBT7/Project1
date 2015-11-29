@@ -6,10 +6,12 @@ from django.contrib.auth import authenticate, login, views
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+from django.contrib.auth.forms import UserCreationForm
 from models import *
 from django import forms
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from models import Reservation
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -342,6 +344,138 @@ class UserList(ListView):
 class UserCreate(CreateView):
     model = User
     fields = ['username', 'first_name', 'last_name', 'email', 'password']
+    success_url = reverse_lazy('reservation_user_create')
+
+# Functions of this view - Create the user in the reservationuser table
+#                        - Hash the users password so that it will work in the login screen
+#                        - Add the user to the user group
+class ReservationUserCreate(CreateView):
+    model = ReservationUser
+    fields = []
     success_url = reverse_lazy('home')
 
+    def form_valid(self, form):
 
+        # Get the next autoincrement value and subtract 1 to get the last created user
+        user =  User.objects.get(pk = (self.get_next_autoincrement(User) - 1))
+
+        # Reset the password to a hashed value so that the user can login to the tool
+        user.set_password(user.password)
+        user.save()
+
+        # Add the user to the user group
+        user_group = Group.objects.get(name = 'User')
+        user_group.user_set.add(user)
+
+        # Complete the form to save valid objects into the database
+        form.instance.user = user
+        form.instance.user_manager = Manager.objects.get(manager =self.request.user)
+
+        return super(ReservationUserCreate, self).form_valid(form)
+
+
+    # Get the next value that will be AutoIncremented
+    def get_next_autoincrement(self, Model):
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute( "SELECT Auto_increment FROM information_schema.tables WHERE table_name='%s';" % \
+                        Model._meta.db_table)
+        row = cursor.fetchone()
+        cursor.close()
+        return int(row[0])
+
+#
+# Create Manager
+#
+
+class ManagerCreate(CreateView):
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email', 'password']
+    success_url = reverse_lazy('reservation_manager_create')
+
+# Functions of this view - create entry in the manager table
+#                        - rehash the managers password so they can login to the tool
+#                        - add the manager to the manager group
+
+class ReservationManagerCreate(CreateView):
+    model = Manager
+    fields = []
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+
+        # Get the next autoincrement value and subtract 1 to get the last created user
+        manager =  User.objects.get(pk = (self.get_next_autoincrement(User) - 1))
+
+        # Reset the password to a hashed value so that the user can login to the tool
+        manager.set_password(manager.password)
+        manager.save()
+
+        # Add the manager to the manager group
+        manager_group = Group.objects.get(name='Manager')
+        manager_group.user_set.add(manager)
+
+        # Complete the form to save a valid entry into the database
+        form.instance.manager = manager
+        form.instance.manager_admin = Admin.objects.get(admin =self.request.user)
+
+        return super(ReservationManagerCreate, self).form_valid(form)
+
+
+    # Get the next value that will be AutoIncremented
+    def get_next_autoincrement(self, Model):
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute( "SELECT Auto_increment FROM information_schema.tables WHERE table_name='%s';" % \
+                        Model._meta.db_table)
+        row = cursor.fetchone()
+        cursor.close()
+        return int(row[0])
+
+
+#
+# Create Admim
+#
+
+class AdminCreate(CreateView):
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email', 'password']
+    success_url = reverse_lazy('reservation_admin_create')
+
+# Functions of this view - create entry into the admin table
+#                        - rehash the managers password so that they can login to the tool
+#                        - add the admin to the admin group
+
+class ReservationAdminCreate(CreateView):
+    model = Admin
+    fields = []
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+
+        # Get the last created user object
+        admin = User.objects.get(pk = self.get_next_autoincrement(User)-1)
+
+        # Reset the password to a hashed value so that the user can login to the tool
+        admin.set_password(admin.password)
+        admin.save()
+
+        # Add the admin to the admin group
+        admin_group = Group.objects.get(name = 'admin')
+        admin_group.user_set.add(admin)
+
+        # Complete the form so to save a valid entry into the database
+        form.instance.admin = admin
+
+        return super(ReservationAdminCreate, self).form_valid(form)
+
+
+    # Get the next value that will be AutoIncremented
+    def get_next_autoincrement(self, Model):
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute( "SELECT Auto_increment FROM information_schema.tables WHERE table_name='%s';" % \
+                        Model._meta.db_table)
+        row = cursor.fetchone()
+        cursor.close()
+        return int(row[0])

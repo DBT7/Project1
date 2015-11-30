@@ -72,7 +72,7 @@ urlpatterns = [
 
     # Create Admin urls
     url(r'^createadmin/$', views.ManagerCreate.as_view(template_name = "User/user_form.html"), name = 'admin_create'),
-    url(r'^createmanagersuccess/$', views.ReservationManagerCreate.as_view(template_name = "Admin/admin_form.html"), name = 'reservation_admin_create'),
+    url(r'^createadminsuccess/$', views.ReservationAdminCreate.as_view(template_name = "Admin/admin_form.html"), name = 'reservation_admin_create'),
 
     # Django adminsite urls
     url(r'^adminsite/', include(admin.site.urls)),

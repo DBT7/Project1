@@ -2,12 +2,6 @@
 
 {% block content %}
     <div>
-        <h1>Manager Functions</h1>
-        <p><a href="{% url 'all_reservations' %}"> All User Reservations</a>
-        </p><p><a href="{% url 'user_create' %}"> Create New User </a></p>
-        <p>Add link to create user</p>
-    </div>
-    <div>
         <h1>Current Reservations</h1>
     </div>
     {% for Reservation in object_list %}
@@ -26,18 +20,4 @@
 
     </div>
     {% endfor %}
-    <div>
-        <em>
-            <h2>Make Comments on Past Reservations</h2>
-            <a href="{% url 'past_reservations' %}">Make Comments on Past Reservations </a>
-        </em>
-    </div>
-    <div>
-        <em>
-            <h2>Make a new Reservation</h2>
-            <a href = "{% url 'resource_list' %}">Choose a Resource</a>
-            |
-            <a href = "{% url 'room_list' %}">Choose a Room</a>
-        </em>
-    </div>
 {% endblock %}

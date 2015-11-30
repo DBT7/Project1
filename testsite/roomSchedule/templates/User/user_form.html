@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if object %}
+        <h1>Edit Room {{ object.pk }}</h1>
+    {% else %}
+        <h2>Create user</h2>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" />
+    </form>
+
+
+{% endblock %}

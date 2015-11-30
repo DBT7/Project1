@@ -33,12 +33,13 @@ urlpatterns = [
     url(r'^admin/$',views.UserHome.as_view(template_name="roomSchedule/reservation_list_admin.html"), name='admin_home'),
 
     # Reservation urls
+    url(r'^allreservations/$', views.ReservationList.as_view(template_name = "roomSchedule/reservation_list_all.htmla"), name='all_reservations'),
     url(r'^pastreservation/$',views.PastReservations.as_view(template_name = "roomSchedule/past_reservations_list.html"), name='past_reservations'),
     url(r'^(?P<pk>[0-9]+)/detailreservation$', views.ReservationDetail.as_view(), name='reservation_detail'),
     url(r'createreservation/$', views.ReservationCreate.as_view(), name='reservation_create'),
-    #url(r'(?P<room>\w+)/create/$', views.ReservationCreate.as_view(), name='reservation_create'),
     url(r'^(?P<pk>[0-9]+)/updatereservation/$', views.ReservationUpdate.as_view(), name='reservation_edit'),
-    url(r'^(?P<pk>[0-9]+)/deletereservation/$', views.ReservationDelete.as_view(), name='reservation_delete'),
+    url(r'^(?P<pk>[0-9]+)/deletereservation/$', views.ReservationDelete.as_view(template_name='roomSchedule/reservation_confirm_delete.html' ), name='reservation_delete'),
+    url(r'^(?P<room>\w+)/availablereservation/$', views.AvailableReservationList.as_view(template_name='roomSchedule/reservation_list_available_times.html'), name='available_reservations' ),
 
     # Resource urls
     url(r'^resource/$',views.ResourceList.as_view(template_name = "Resource/resource_list.html"), name='resource_list'),
@@ -56,6 +57,22 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/updateroom/$', views.RoomUpdate.as_view(template_name = "Room/room_form.html"), name = "room_update"),
     url(r'^(?P<pk>[0-9]+)/deleteroom/$', views.RoomDelete.as_view(template_name = "Room/room_confirm_delete.html"), name = "room_delete"),
 
+
+    # Comment urls
+    url(r'^(?P<pk>[0-9]+)/updatecomment/$', views.CommentUpdate.as_view(template_name="Comment/comment_form.html"), name="comment_update"),
+
+    # Create Users URLS
+
+    url(r'^createuser/$', views.UserCreate.as_view(template_name = "User/user_form.html"), name = 'user_create'),
+    url(r'^createusersuccess/$', views.ReservationUserCreate.as_view(template_name = "ReservationUser/ReservationUser_form.html"), name = 'reservation_user_create'),
+
+    # Create Managers usls
+    url(r'^createmanager/$', views.ManagerCreate.as_view(template_name = "User/user_form.html"), name = 'manager_create'),
+    url(r'^createmanagersuccess/$', views.ReservationManagerCreate.as_view(template_name = "Manager/manager_form.html"), name = 'reservation_manager_create'),
+
+    # Create Admin urls
+    url(r'^createadmin/$', views.AdminCreate.as_view(template_name = "User/user_form.html"), name = 'admin_create'),
+    url(r'^createadminsuccess/$', views.ReservationAdminCreate.as_view(template_name = "Admin/admin_form.html"), name = 'reservation_admin_create'),
 
     # Django adminsite urls
     url(r'^adminsite/', include(admin.site.urls)),

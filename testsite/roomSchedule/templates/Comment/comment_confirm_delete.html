@@ -6,7 +6,7 @@
     {% csrf_token %}
     <p>Are you sure you want to delete {{ object.title }}?</p>
     <input type="submit" value="yes" />
-    <a href="{% url 'home' %}">no</a>
+    <a href="{% url 'comment_list' %}">no</a>
 </form>
 
 {% endblock %}

@@ -2,9 +2,9 @@
 
 {% block content %}
     {% if object %}
-        <h1>Edit Reservation {{ object.reservation_id }}</h1>
+        <h2>Edit {{ object.title }}</h2>
     {% else %}
-        <h2>Create Reservation</h2>
+        <h2>Create</h2>
     {% endif %}
     <form method="post">
         {% csrf_token %}

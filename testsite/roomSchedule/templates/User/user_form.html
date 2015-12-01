@@ -2,13 +2,15 @@
 
 {% block content %}
     {% if object %}
-        <h1>Edit Reservation {{ object.reservation_id }}</h1>
+        <h1>Edit Room {{ object.pk }}</h1>
     {% else %}
-        <h2>Create Reservation</h2>
+        <h2>Create user</h2>
     {% endif %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" />
     </form>
+
+
 {% endblock %}

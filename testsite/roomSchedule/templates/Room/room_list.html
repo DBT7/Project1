@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <h1>All Available Rooms</h1>
+    </div>
+    {% for Room in object_list %}
+    <div>
+        <h2> Room ID: {{ Room.room_id }}</h2>
+        <p>Building:  {{ Room.building_building.name }}</p>
+        <p>Name:      {{ Room.name}}</p>
+        <p>Capacity:   {{ Room.capacity}}</p>
+        <p>Resource:   {{ Room.resource.title }}</p>
+
+        <p>
+            Add link to take to available times
+        </p>
+        <a href="{% url 'available_reservations' Room.pk %}"> Available Reservations</a>
+    </div>
+    {% endfor %}
+{% endblock %}

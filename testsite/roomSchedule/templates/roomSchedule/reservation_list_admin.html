@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <p>
+        <h1>Admin Functions</h1>
+        <p><a href="{% url 'resource_create' %}">Create Resource</a></p>
+        <p><a href="{% url 'room_create' %}">Create Room</a></p>
+        <p><a href="{% url 'manager_create' %}">Create a Manager</a></p>
+        <p><a href="{% url 'admin_create' %}">Create a Admin</a></p>
+        <p>Add link to create user</p>
+        <p><a href="{% url 'all_reservations' %}">All User Reservations</a> </p>
+    </div>
     <div>
         <h1>Current Reservations</h1>
     </div>
@@ -23,12 +32,12 @@
     <div>
         <em>
             <h2>Make Comments on Past Reservations</h2>
-            <a href="{% url 'past_reservations' %}">Past Reservations </a>
+            <a href="{% url 'past_reservations' %}">Make Comments on Past Reservations </a>
         </em>
     </div>
     <div>
-        <h2>Make a new Reservation</h2>
         <em>
+            <h2>Make a new Reservation</h2>
             <a href = "{% url 'resource_list' %}">Choose a Resource</a>
             |
             <a href = "{% url 'room_list' %}">Choose a Room</a>

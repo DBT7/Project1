@@ -14,20 +14,16 @@ General_User --> "log on to the tool using a username and password"
 
  "log on to the tool using a username and password" --> "User Home Page"
  "User Home Page" --> "change password"
- "User Home Page" --> "leave feedback on previously reserved resources"
- "User Home Page" --> "search the conference room resource based on common features"
+ "User Home Page" --> "leave feedback on previous Reservations"
+ "User Home Page" --> "search the conference room resource based on common resources"
+ "User Home Page" --> "search the conference room resource based on room"
  "User Home Page" --> "change or cancel the conference room resource reservations"
 
- "change or cancel the conference room resource reservations" --> "User Home Page"
- "leave feedback on previously reserved resources" --> "User Home Page"
- "change password" --> "User Home Page"
+ "search the conference room resource based on common resources" --> "make conference room reservations"
+ "search the conference room resource based on common resources" --> "choose to be added to a wait list if the resource desired is not available"
+ "search the conference room resource based on room" --> "make conference room reservations"
+ "search the conference room resource based on room" --> "choose to be added to a wait list if the resource desired is not available"
 
-
- "search the conference room resource based on common features" --> "make conference room reservations"
- "search the conference room resource based on common features" --> "choose to be added to a wait list if the resource desired is not available"
-
- "make conference room reservations" --> "User Home Page"
- "choose to be added to a wait list if the resource desired is not available" --> "User Home Page"
 
 
 @enduml
@@ -42,7 +38,7 @@ title Manager
 Manager --> "log on to the tool using a username and password"
 
  "log on to the tool using a username and password" --> "Manager Home Page"
- "Manager Home Page" --> "Assign IDs for General Users"
+ "Manager Home Page" --> "Create General Users"
  "Manager Home Page" --> "see all reservations made by general users and the manager"
  "Manager Home Page" --> "change or cancel any reservation that a general user or manager has made"
 
@@ -62,5 +58,7 @@ Administrator --> "log on to the tool using a username and password"
  "Admin Home Page" --> "Assign  Admin"
  "Admin Home Page" --> "Assign Manager"
  "Admin Home Page" --> "Create or Destroy resources"
+ "Admin Home Page" --> "Create Rooms"
+ "Admin Home Page" --> "View, edit, or remove all user reservations"
 
 @enduml

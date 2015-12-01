@@ -20,18 +20,4 @@
 
     </div>
     {% endfor %}
-    <div>
-        <em>
-            <h2>Make Comments on Past Reservations</h2>
-            <a href="{% url 'past_reservations' %}">Past Reservations </a>
-        </em>
-    </div>
-    <div>
-        <h2>Make a new Reservation</h2>
-        <em>
-            <a href = "{% url 'resource_list' %}">Choose a Resource</a>
-            |
-            <a href = "{% url 'room_list' %}">Choose a Room</a>
-        </em>
-    </div>
 {% endblock %}

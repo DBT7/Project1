@@ -109,6 +109,25 @@ class ReservationListByManager(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationListByManager, self).dispatch(request,*args, **kwargs)
 
+class ReservationListManager(ListView):
+    model= Reservation
+
+    def get_queryset(self):
+        self.manager=self.request.user
+        manager = Manager.objects.get(manager=self.manager)
+        user_list = ReservationUser.objects.filter(user_manager=manager)
+
+        return Reservation.objects.filter(user_user__in=[user.user for user in user_list])
+
+    def get_context_data(self, **kwargs):
+        context=super(ReservationListManager, self).get_context_data(**kwargs)
+        context['manager'] = self.manager
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ReservationListManager, self).dispatch(request,*args, **kwargs)
+
 class ReservationDetail(DetailView):
     model=Reservation
     fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']

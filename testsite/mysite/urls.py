@@ -35,6 +35,7 @@ urlpatterns = [
     # Manager list urls
     url(r'^managerlist', views.ManagerList.as_view(template_name="Manager/manager_list.html"), name='manager_list'),
     url(r'^(?P<manager>[0-9]+)/reservationbymanager', views.ReservationListByManager.as_view(template_name='roomSchedule/reservation_list_by_manager.html'),name='reservations_by_manager'),
+    url(r'^/reservationlistmanager', views.ReservationListManager.as_view(template_name='roomSchedule/reservation_list_by_manager.html'),name='reservations_list_manager'),
 
 
     # Reservation urls

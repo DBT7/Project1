@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <h1>Managers</h1>
+    </div>
+    {% for Manager in object_list %}
+    <div class="Manager">
+        <h2> Manager: <a href="{% url 'reservations_by_manager' Manager.pk %}">{{ Manager.manager.username }}</a> </h2>
+
+    </div>
+    {% endfor %}
+{% endblock %}

@@ -31,6 +31,9 @@ def search(request):
         message="You didn't specify any search criteria"
     return HttpResponse(message)
 
+#
+# Home Pages
+#
 class AdminHome(ListView):
     model = Reservation
 
@@ -61,6 +64,22 @@ class UserHome(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(UserHome, self).dispatch(request,*args, **kwargs)
 
+#
+# Manager Views
+#
+
+class ManagerList(ListView):
+    model = Manager
+
+    def get_queryset(self):
+        return Manager.objects.filter(manager_admin = Admin.objects.get(admin=self.request.user))
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ManagerList, self).dispatch(request,*args, **kwargs)
+#
+# Reservation views
+#
 class ReservationList(ListView):
     model = Reservation
 
@@ -71,6 +90,24 @@ class ReservationList(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationList, self).dispatch(request,*args, **kwargs)
 
+class ReservationListByManager(ListView):
+    model = Reservation
+
+    def get_queryset(self):
+        manager = Manager.objects.get(pk=self.kwargs['manager'])
+        self.manager = manager.manager
+        user_list = ReservationUser.objects.filter(user_manager=manager)
+
+        return Reservation.objects.filter(user_user__in=[user.user for user in user_list])
+
+    def get_context_data(self, **kwargs):
+        context=super(ReservationListByManager, self).get_context_data(**kwargs)
+        context['manager'] = self.manager
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ReservationListByManager, self).dispatch(request,*args, **kwargs)
 
 class ReservationDetail(DetailView):
     model=Reservation

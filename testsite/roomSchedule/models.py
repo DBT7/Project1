@@ -16,6 +16,8 @@ class Building(models.Model):
     building_id = models.AutoField(db_column='Building_id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
+    def __unicode__(self):
+        return self.name
     class Meta:
         
         db_table = 'building'
@@ -41,6 +43,9 @@ class Resource(models.Model):
     title = models.CharField(db_column='Title', max_length=200, blank=True, null=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=45, blank=True, null=True)  # Field name made lowercase.
 
+    def __unicode__(self):
+        return self.title
+
     class Meta:
         db_table = 'resource'
 
@@ -51,6 +56,9 @@ class Room(models.Model):
     name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
     capacity = models.IntegerField(db_column='Capacity')  # Field name made lowercase.
     resource = models.ManyToManyField(Resource)
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         db_table = 'room'

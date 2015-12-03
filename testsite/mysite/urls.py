@@ -32,8 +32,14 @@ urlpatterns = [
     url(r'^manager/$',views.UserHome.as_view(template_name="roomSchedule/reservation_list_manager.html"), name='manager_home'),
     url(r'^admin/$',views.UserHome.as_view(template_name="roomSchedule/reservation_list_admin.html"), name='admin_home'),
 
+    # Manager list urls
+    url(r'^managerlist', views.ManagerList.as_view(template_name="Manager/manager_list.html"), name='manager_list'),
+    url(r'^(?P<manager>[0-9]+)/reservationbymanager', views.ReservationListByManager.as_view(template_name='roomSchedule/reservation_list_by_manager.html'),name='reservations_by_manager'),
+    url(r'^/reservationlistmanager', views.ReservationListManager.as_view(template_name='roomSchedule/reservation_list_by_manager.html'),name='reservations_list_manager'),
+
+
     # Reservation urls
-    url(r'^allreservations/$', views.ReservationList.as_view(template_name = "roomSchedule/reservation_list_all.htmla"), name='all_reservations'),
+    url(r'^allreservations/$', views.ReservationList.as_view(template_name = "roomSchedule/reservation_list_all.html"), name='all_reservations'),
     url(r'^pastreservation/$',views.PastReservations.as_view(template_name = "roomSchedule/past_reservations_list.html"), name='past_reservations'),
     url(r'^(?P<pk>[0-9]+)/detailreservation$', views.ReservationDetail.as_view(), name='reservation_detail'),
     url(r'createreservation/$', views.ReservationCreate.as_view(), name='reservation_create'),
@@ -65,6 +71,10 @@ urlpatterns = [
 
     url(r'^createuser/$', views.UserCreate.as_view(template_name = "User/user_form.html"), name = 'user_create'),
     url(r'^createusersuccess/$', views.ReservationUserCreate.as_view(template_name = "ReservationUser/ReservationUser_form.html"), name = 'reservation_user_create'),
+
+    # Admin Create user urls
+    url(r'^admincreateuser/$', views.AdminUserCreate.as_view(template_name = "User/user_form.html"), name = 'admin_user_create'),
+    url(r'^admincreateusersuccess/$', views.ReservationAdminUserCreate.as_view(template_name = "Admin/admin_form.html"), name = 'reservation_admin_user_create'),
 
     # Create Managers usls
     url(r'^createmanager/$', views.ManagerCreate.as_view(template_name = "User/user_form.html"), name = 'manager_create'),

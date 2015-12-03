@@ -31,6 +31,9 @@ def search(request):
         message="You didn't specify any search criteria"
     return HttpResponse(message)
 
+#
+# Home Pages
+#
 class AdminHome(ListView):
     model = Reservation
 
@@ -61,6 +64,22 @@ class UserHome(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(UserHome, self).dispatch(request,*args, **kwargs)
 
+#
+# Manager Views
+#
+
+class ManagerList(ListView):
+    model = Manager
+
+    def get_queryset(self):
+        return Manager.objects.filter(manager_admin = Admin.objects.get(admin=self.request.user))
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ManagerList, self).dispatch(request,*args, **kwargs)
+#
+# Reservation views
+#
 class ReservationList(ListView):
     model = Reservation
 
@@ -71,6 +90,43 @@ class ReservationList(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(ReservationList, self).dispatch(request,*args, **kwargs)
 
+class ReservationListByManager(ListView):
+    model = Reservation
+
+    def get_queryset(self):
+        manager = Manager.objects.get(pk=self.kwargs['manager'])
+        self.manager = manager.manager
+        user_list = ReservationUser.objects.filter(user_manager=manager)
+
+        return Reservation.objects.filter(user_user__in=[user.user for user in user_list])
+
+    def get_context_data(self, **kwargs):
+        context=super(ReservationListByManager, self).get_context_data(**kwargs)
+        context['manager'] = self.manager
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ReservationListByManager, self).dispatch(request,*args, **kwargs)
+
+class ReservationListManager(ListView):
+    model= Reservation
+
+    def get_queryset(self):
+        self.manager=self.request.user
+        manager = Manager.objects.get(manager=self.manager)
+        user_list = ReservationUser.objects.filter(user_manager=manager)
+
+        return Reservation.objects.filter(user_user__in=[user.user for user in user_list])
+
+    def get_context_data(self, **kwargs):
+        context=super(ReservationListManager, self).get_context_data(**kwargs)
+        context['manager'] = self.manager
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ReservationListManager, self).dispatch(request,*args, **kwargs)
 
 class ReservationDetail(DetailView):
     model=Reservation
@@ -471,6 +527,42 @@ class ReservationAdminCreate(CreateView):
 
 
     # Get the next value that will be AutoIncremented
+    def get_next_autoincrement(self, Model):
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute( "SELECT Auto_increment FROM information_schema.tables WHERE table_name='%s';" % \
+                        Model._meta.db_table)
+        row = cursor.fetchone()
+        cursor.close()
+        return int(row[0])
+class AdminUserCreate(CreateView):
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email', 'password']
+    success_url = reverse_lazy('reservation_admin_user_create')
+
+class ReservationAdminUserCreate(CreateView):
+    model = ReservationUser
+    fields = ["user_manager"]
+    success_url = reverse_lazy('home')
+    
+    
+    def form_valid(self, form):
+         # Get the next autoincrement value and subtract 1 to get the last created user
+        user =  User.objects.get(pk = (self.get_next_autoincrement(User) - 1))
+
+        # Reset the password to a hashed value so that the user can login to the tool
+        user.set_password(user.password)
+        user.save()
+
+        # Add the user to the user group
+        user_group = Group.objects.get(name = 'User')
+        user_group.user_set.add(user)
+
+        # Complete the form to save valid objects into the database
+        form.instance.user = user
+        print "InFormValid"
+        return super(ReservationAdminUserCreate, self).form_valid(form)
+
     def get_next_autoincrement(self, Model):
         from django.db import connection
         cursor = connection.cursor()

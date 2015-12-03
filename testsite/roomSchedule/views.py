@@ -479,3 +479,39 @@ class ReservationAdminCreate(CreateView):
         row = cursor.fetchone()
         cursor.close()
         return int(row[0])
+class AdminUserCreate(CreateView):
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email', 'password']
+    success_url = reverse_lazy('reservation_admin_user_create')
+
+class ReservationAdminUserCreate(CreateView):
+    model = ReservationUser
+    fields = ["user_manager"]
+    success_url = reverse_lazy('home')
+    
+    
+    def form_valid(self, form):
+         # Get the next autoincrement value and subtract 1 to get the last created user
+        user =  User.objects.get(pk = (self.get_next_autoincrement(User) - 1))
+
+        # Reset the password to a hashed value so that the user can login to the tool
+        user.set_password(user.password)
+        user.save()
+
+        # Add the user to the user group
+        user_group = Group.objects.get(name = 'User')
+        user_group.user_set.add(user)
+
+        # Complete the form to save valid objects into the database
+        form.instance.user = user
+        print "InFormValid"
+        return super(ReservationAdminUserCreate, self).form_valid(form)
+
+    def get_next_autoincrement(self, Model):
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute( "SELECT Auto_increment FROM information_schema.tables WHERE table_name='%s';" % \
+                        Model._meta.db_table)
+        row = cursor.fetchone()
+        cursor.close()
+        return int(row[0])

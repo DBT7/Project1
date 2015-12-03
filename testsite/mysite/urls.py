@@ -66,6 +66,10 @@ urlpatterns = [
     url(r'^createuser/$', views.UserCreate.as_view(template_name = "User/user_form.html"), name = 'user_create'),
     url(r'^createusersuccess/$', views.ReservationUserCreate.as_view(template_name = "ReservationUser/ReservationUser_form.html"), name = 'reservation_user_create'),
 
+    # Admin Create user urls
+    url(r'^admincreateuser/$', views.AdminUserCreate.as_view(template_name = "User/user_form.html"), name = 'admin_user_create'),
+    url(r'^admincreateusersuccess/$', views.ReservationAdminUserCreate.as_view(template_name = "Admin/admin_form.html"), name = 'reservation_admin_user_create'),
+
     # Create Managers usls
     url(r'^createmanager/$', views.ManagerCreate.as_view(template_name = "User/user_form.html"), name = 'manager_create'),
     url(r'^createmanagersuccess/$', views.ReservationManagerCreate.as_view(template_name = "Manager/manager_form.html"), name = 'reservation_manager_create'),

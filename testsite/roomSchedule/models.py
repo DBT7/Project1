@@ -89,6 +89,9 @@ class Manager(models.Model):
     manager = models.ForeignKey(auth.models.User)
     manager_admin = models.ForeignKey(Admin)
 
+    def __unicode__(self):
+        return self.manager.username
+
 class ReservationUser(models.Model):
     user = models.ForeignKey(auth.models.User)
     user_manager = models.ForeignKey(Manager)

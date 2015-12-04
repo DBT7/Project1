@@ -211,7 +211,7 @@ class AvailableReservationList(ListView):
     model = Reservation
 
     def get_queryset(self):
-        return Reservation.objects.filter(room_room=self.kwargs['room']).filter(user_user = 1).exclude(reservation_dt__lte = datetime.now())
+        return Reservation.objects.filter(room_room=self.kwargs['room']).exclude(reservation_dt__lte = datetime.now())
 
 class ReservedReservationList(ListView):
     model = Reservation

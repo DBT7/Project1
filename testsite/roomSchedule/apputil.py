@@ -1,26 +1,14 @@
-from .models import *
-from django.db.models.signals import post_save
+
 from django.contrib.auth.models import User,Group
-from django.dispatch import receiver
 
 import datetime
 
-def slot_scheduled(request):
-
-
-    all_resr=Reservation.objects.all()
-
-    return all_resr
-
-def get_user_reservation(request):
-    resv_dic={}
-
-
-    resv_dic['test']=request.user.groups.values_list('name',flat=True)
-    return resv_dic
-
 
 def generate_report():
+
+    # Not sure how you set up your manager group
+    # if you set up your manger group as 'MgrGrp' then this code should work
+    # if you have a different name for manager group, change 'MgrGrp' accordingly
 
     managers=User.objects.filter(groups__name='MgrGrp')
 

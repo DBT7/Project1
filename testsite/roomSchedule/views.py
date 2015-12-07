@@ -18,6 +18,12 @@ from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse_lazy, reverse
 from datetime import datetime, timedelta
 
+from django.dispatch import receiver
+from django import forms
+from django.db.models import Q
+from django.db.models.signals import post_save
+
+
 # Create your views here.
 
 def search_form(request):
@@ -571,3 +577,18 @@ class ReservationAdminUserCreate(CreateView):
         row = cursor.fetchone()
         cursor.close()
         return int(row[0])
+
+@receiver(post_save,sender=Reservation)
+def send_confirm_email(sender,**kwargs):
+    # The newly created reservation instance
+    resv=kwargs['instance']
+
+    msg=""
+    msg=msg+"Time:"+str(resv.reservation_dt) +'\n'
+    msg=msg+"User:"+ str(resv.user_user.username)+'\n'
+    msg=msg+"Location:"+ str(resv.room_room) +'\n'
+    msg=msg+"Duration:"+ str(resv.duration*30) +'mins'
+    resv.user_user.email_user(subject="Your reservation has been successfully added.",message=msg)
+
+
+

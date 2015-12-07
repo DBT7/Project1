@@ -113,3 +113,10 @@ LOGIN_URL = '/login/'
 STATICFILES_DIR = (
     os.path.abspath(BASE_DIR + '/static/')
 )
+
+#Email backend
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'databaset7@gmail.com'
+EMAIL_HOST_PASSWORD = '2015dbt7'
+EMAIL_PORT = 587

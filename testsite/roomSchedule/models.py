@@ -55,7 +55,7 @@ class Room(models.Model):
     building_building = models.ForeignKey(Building, db_column='Building_Building_id', related_name='room_building' )  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=45, blank=True, null=True)  # Field name made lowercase.
     capacity = models.IntegerField(db_column='Capacity')  # Field name made lowercase.
-    resource = models.ManyToManyField(Resource)
+    resource = models.ForeignKey(Resource)
 
     def __unicode__(self):
         return self.name

@@ -31,7 +31,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# please use 'pip install django-crontab' to install the scheduled task app
+
 INSTALLED_APPS = (
+    'django.crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -113,3 +116,15 @@ LOGIN_URL = '/login/'
 STATICFILES_DIR = (
     os.path.abspath(BASE_DIR + '/static/')
 )
+
+#Email backend
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'databaset7@gmail.com'
+EMAIL_HOST_PASSWORD = '2015dbt7'
+EMAIL_PORT = 587
+
+# add a scheduled task for monthly report
+CRONJOBS=[
+    ('0 0 1 * *', 'roomSchedule.apputil.generate_report')
+]

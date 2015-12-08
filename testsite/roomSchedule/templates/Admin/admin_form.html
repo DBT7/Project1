@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Please Select the user's manager</h1>
+    <h1>Successfully Created an Admin</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" />
+        <input type="submit" id = 'formButton'/>
     </form>
+    <script language="javascript">
+            document.getElementById("formButton").click();
+        </script>
 {% endblock %}

@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 # please use 'pip install django-crontab' to install the scheduled task app
 
 INSTALLED_APPS = (
-    'django.crontab',
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -104,7 +104,7 @@ class ReservationListByManager(ListView):
         self.manager = manager.manager
         user_list = ReservationUser.objects.filter(user_manager=manager)
 
-        return Reservation.objects.filter(user_user__in=[user.user for user in user_list])
+        return Reservation.objects.filter(user_user__in=[user.user for user in user_list]).groupby('user_user')
 
     def get_context_data(self, **kwargs):
         context=super(ReservationListByManager, self).get_context_data(**kwargs)
@@ -136,7 +136,7 @@ class ReservationListManager(ListView):
 
 class ReservationDetail(DetailView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'user_user', 'room_room']
+    fields = ['reservation_id', 'reservation_dt', 'user_user', 'room_room']
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -144,7 +144,7 @@ class ReservationDetail(DetailView):
 
 class ReservationCreate(CreateView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'room_room', 'reservation_comment_id']
+    fields = ['reservation_id', 'reservation_dt', 'room_room', 'reservation_comment_id']
     success_url = reverse_lazy('user_home')
 
     @method_decorator(login_required)
@@ -157,7 +157,7 @@ class ReservationCreate(CreateView):
 
 class ReservationUpdate(UpdateView):
     model=Reservation
-    fields = ['reservation_id', 'reservation_dt', 'duration', 'room_room']
+    fields = ['reservation_id', 'reservation_dt', 'room_room']
     success_url = reverse_lazy('home')
 
     @method_decorator(login_required)
@@ -594,7 +594,8 @@ def send_confirm_email(sender,**kwargs):
     msg=msg+"Time:"+str(resv.reservation_dt) +'\n'
     msg=msg+"User:"+ str(resv.user_user.username)+'\n'
     msg=msg+"Location:"+ str(resv.room_room) +'\n'
-    msg=msg+"Duration:"+ str(resv.duration*30) +'mins'
+    if resv.duration is not None:
+        msg=msg+"Duration:"+ str(resv.duration*30) +'mins'
     resv.user_user.email_user(subject="Your reservation has been successfully added.",message=msg)
 
 

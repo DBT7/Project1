@@ -47,6 +47,9 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/deletereservation/$', views.ReservationDelete.as_view(template_name='roomSchedule/reservation_confirm_delete.html' ), name='reservation_delete'),
     url(r'^(?P<room>\w+)/availablereservation/$', views.AvailableReservationList.as_view(template_name='roomSchedule/reservation_list_available_times.html'), name='available_reservations' ),
 
+    # Waitlist urls
+    url(r'^(?P<pk>[0-9]+)/createwaitlist/$', views.WaitListCreate.as_view(template_name='Waitlist/waitlist_form.html'), name='waitlist_create'),
+
     # Resource urls
     url(r'^resource/$',views.ResourceList.as_view(template_name = "Resource/resource_list.html"), name='resource_list'),
     url(r'^(?P<pk>[0-9]+)/detailresource/$', views.ResourceDetail.as_view(template_name = "Resource/resource_detail.html"), name='resource_detail'),

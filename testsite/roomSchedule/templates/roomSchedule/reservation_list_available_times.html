@@ -12,7 +12,7 @@
             </div>
         {% else %}
             <div class="Reservation" style="width:200px;height:50px;padding:5px;border:10px ridge red;">
-                <a href="{% url 'reservation_edit' Reservation.pk %}">{{ Reservation.reservation_dt }}</a>
+                <a href="{% url 'waitlist_create' Reservation.pk %}">{{ Reservation.reservation_dt }}</a>
                 <p>Room: {{Reservation.room_room.name}}</p>
             </div>
         {% endif %}

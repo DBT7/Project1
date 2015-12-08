@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Would you like to be added to a waitlist for this reservation?</h1>
+    <h2>Click submit to be added to a waitlist or click home to be taken back to your homepage</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" id = 'formButton'/>
+    </form>
+    <p><a href="{% url 'home'  %}">home</a></p>
+{% endblock %}

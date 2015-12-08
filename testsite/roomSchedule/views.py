@@ -384,8 +384,15 @@ class WaitListList(ListView):
 class WaitListUpdate(UpdateView):
     model = WaitList
 
-class WaitListCreate(CreateView):
-    model=WaitList
+class WaitListCreate(UpdateView):
+    model=Reservation
+    fields = []
+    success_url = reverse_lazy('home')
+    
+    def form_valid(self, form):
+        waitlist = WaitList.objects.create(user = self.request.user, reservation = Reservation.objects.get(pk=form.instance.reservation_id ))
+        print waitlist.id
+        return super(WaitListCreate, self).form_valid(form)
 
 class WaitListDetail(DetailView):
     model = DeleteView
